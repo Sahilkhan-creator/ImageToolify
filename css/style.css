@@ -1,209 +1,120 @@
-/* ===== BASE ===== */
-body {
+/* ===============================
+   From Uiverse.io by Laurits123456
+   pushing a hamburger menu into a pillow texture like background
+   =============================== */
+
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f6f7fb;
-  color: #333;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
+/* ===== BODY (optional base) ===== */
+body {
+  background: #0e0e0e;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
 }
 
-/* ===== HEADER ===== */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #5b4fff;
-  color: white;
-  position: relative;
-}
-
-.logo {
-  font-size: 1.5em;
-}
-/* From Uiverse.io by Laurits123456 */ 
-/*pushing a hamburger menu into a pillow texture like background*/
-
+/* ===== MENU BUTTON ===== */
 .menuButton {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 13%;
-  color: #090909;
+
   width: 3.5em;
   height: 3.5em;
   border-radius: 0.5em;
+
   background: #171717;
   border: 1px solid #171717;
-  transition: all .3s;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
   box-shadow: inset 4px 4px 12px #3a3a3a,
-             inset -4px -4px 12px #000000;
+              inset -4px -4px 12px #000000;
 }
 
 .menuButton:hover {
-  border: 1px solid black;
+  border: 1px solid #000;
 }
 
 .menuButton:active {
-  color: #666;
   box-shadow: 6px 6px 12px #3a3a3a,
-             -6px -6px 12px #000000;
+              -6px -6px 12px #000000;
 }
 
-input[type = "checkbox"] {
-  -webkit-appearance: none;
+/* ===== HIDE CHECKBOX ===== */
+.menuButton input[type="checkbox"] {
   display: none;
-  visibility: hidden;
 }
 
+/* ===== LINES ===== */
 .menuButton span {
   width: 30px;
   height: 4px;
-  background: rgb(200,200,200);
+  background: rgb(200, 200, 200);
   border-radius: 100px;
   transition: 0.3s ease;
 }
 
-input[type]:checked ~ span.top {
-  transform: translateY(290%)rotate(45deg);
+/* ===== HAMBURGER ANIMATION ===== */
+.menuButton input:checked ~ span.top {
+  transform: translateY(290%) rotate(45deg);
   width: 40px;
 }
 
-input[type]:checked ~ span.bot {
+.menuButton input:checked ~ span.bot {
   transform: translateY(-270%) rotate(-45deg);
   width: 40px;
   box-shadow: 0 0 10px #495057;
 }
 
-input[type]:checked ~ span.mid {
+.menuButton input:checked ~ span.mid {
   transform: translateX(-20px);
   opacity: 0;
 }
 
-/* ===== MENU BUTTON (Uiverse) ===== */
-.menuButton {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 3em;
-  height: 3em;
-  justify-content: center;
-  align-items: center;
-  background: #171717;
-  border-radius: 8px;
-  cursor: pointer;
+/* ===============================
+   SLIDE MENU
+   =============================== */
+
+.sideMenu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 250px;
+  height: 100vh;
+
+  background: #111;
+  padding-top: 90px;
+
+  transition: 0.35s ease;
+  z-index: 1000;
 }
 
-.menuButton span {
-  width: 28px;
-  height: 4px;
-  background: #fff;
-  border-radius: 10px;
-  transition: 0.3s;
+/* SHOW MENU */
+#menuToggle:checked ~ .sideMenu {
+  left: 0;
 }
 
-.menuButton input {
-  display: none;
+/* ===== MENU LINKS ===== */
+.sideMenu a {
+  display: block;
+  padding: 15px 25px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background 0.2s ease;
 }
 
-/* Animation */
-#menuToggle:checked ~ .menuButton .top {
-  transform: translateY(10px) rotate(45deg);
-}
-#menuToggle:checked ~ .menuButton .mid {
-  opacity: 0;
-}
-#menuToggle:checked ~ .menuButton .bot {
-  transform: translateY(-10px) rotate(-45deg);
-}
-
-/* ===== MENU PANEL ===== */
-.menu-panel {
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  background: #0D1117;
-  border-radius: 8px;
-  padding: 10px;
-  display: none;
-  flex-direction: column;
-  width: 200px;
-}
-
-#menuToggle:checked ~ .menu-panel {
-  display: flex;
-}
-
-.value {
-  background: transparent;
-  border: none;
-  color: white;
-  padding: 12px;
-  text-align: left;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.value:hover {
-  background: #21262C;
-}
-
-/* ===== HERO ===== */
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-  background: #e6e0ff;
-}
-
-.hero h2 {
-  color: #5b4fff;
-  font-size: 2em;
-}
-
-.buttons {
-  margin-top: 25px;
-}
-
-.tool-btn {
-  display: inline-block;
-  margin: 10px;
-  padding: 15px 30px;
-  background: #5b4fff;
-  color: white;
-  border-radius: 6px;
-  font-weight: bold;
-}
-
-.tool-btn:hover {
-  background: #4033cc;
-}
-
-/* ===== FEATURES ===== */
-.features {
-  max-width: 900px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-}
-
-.features ul {
-  list-style: none;
-  padding: 0;
-}
-
-.features li {
-  margin: 10px 0;
-}
-
-/* ===== FOOTER ===== */
-footer {
+.sideMenu a:hover {
   background: #222;
-  color: white;
-  text-align: center;
-  padding: 15px;
-                        }
+  }
