@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Image to PDF Converter – Free Online Tool</title>
-  <meta name="description" content="Convert JPG and PNG images to PDF online for free. Fast and secure image to PDF converter.">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image to PDF - ImageToolify</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <header>
-  <h1>Image to PDF Converter</h1>
+    <h1>Image to PDF</h1>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
 </header>
 
-<div class="container">
-  <input type="file" id="imageInput" accept="image/*">
-  <button onclick="convertToPDF()">Convert to PDF</button>
+<section class="tool-section">
+    <h2>Convert your images to PDF</h2>
+    <input type="file" id="imageInput" multiple>
+    <button onclick="convertToPDF()">Convert</button>
+</section>
 
-  <p>
-    Convert images to PDF instantly. This free online image to PDF converter
-    works directly in your browser without uploading files to any server.
-  </p>
-
-  <h2>FAQs</h2>
-  <p><b>Is it free?</b> Yes, 100% free.</p>
-  <p><b>Is my data safe?</b> Yes, everything runs locally.</p>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="js/image-to-pdf.js"></script>
-
 </body>
-</html>￼Enter
+</html>
