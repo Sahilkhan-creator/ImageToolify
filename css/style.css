@@ -31,24 +31,24 @@
   border-radius: 2px;
   transition: 0.3s;
 }
-
 /* ===== SIDEBAR ===== */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -250px; /* hidden initially */
+  right: -250px;
   width: 250px;
   height: 100%;
   background: #0D1117;
   padding: 20px;
-  display: flex;
+  display: none; /* hidden by default */
   flex-direction: column;
-  transition: right 0.3s ease; /* smooth slide */
+  transition: right 0.3s ease;
   z-index: 100;
 }
 
 .sidebar.active {
-  right: 0; /* slide in when active */
+  display: flex; /* show when active */
+  right: 0; /* slide in */
 }
 
 .sidebar .close-btn {
