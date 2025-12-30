@@ -36,19 +36,19 @@
 .sidebar {
   position: fixed;
   top: 0;
-  right: -250px;
+  right: -250px; /* hidden initially */
   width: 250px;
   height: 100%;
   background: #0D1117;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  transition: 0.3s;
+  transition: right 0.3s ease; /* smooth slide */
   z-index: 100;
 }
 
 .sidebar.active {
-  right: 0;
+  right: 0; /* slide in when active */
 }
 
 .sidebar .close-btn {
@@ -117,4 +117,4 @@ footer {
   color: white;
   text-align: center;
   padding: 15px;
-}
+  }
