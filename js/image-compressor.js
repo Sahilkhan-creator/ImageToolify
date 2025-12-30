@@ -9,23 +9,27 @@ qualitySlider.addEventListener("input", function() {
 
 compressBtn.addEventListener("click", function() {
     const file = fileInput.files[0];
-    if (!file) return alert("Select an image");
+    if (!file) return alert("Please select an image!");
 
-    const originalSize = (file.size / 1024).toFixed(2); // KB
-    document.getElementById("original-size").innerText = "Original Size: " + originalSize + " KB";
+    // Display original size
+    const originalSizeKB = (file.size / 1024).toFixed(2);
+    document.getElementById("original-size").innerText = "Original Size: " + originalSizeKB + " KB";
 
+    // Parse slider value correctly
     const quality = parseFloat(qualitySlider.value);
 
     new Compressor(file, {
-        quality: quality, // Use selected slider value
+        quality: quality,
         success(result) {
-            const compressedSize = (result.size / 1024).toFixed(2); // KB
-            document.getElementById("compressed-size").innerText = "Compressed Size: " + compressedSize + " KB";
+            // Display compressed size
+            const compressedSizeKB = (result.size / 1024).toFixed(2);
+            document.getElementById("compressed-size").innerText = "Compressed Size: " + compressedSizeKB + " KB";
 
+            // Create download link
             const link = document.createElement("a");
             link.href = URL.createObjectURL(result);
             link.download = "compressed_" + file.name;
-            link.textContent = `Download (${compressedSize} KB)`;
+            link.textContent = `Download (${compressedSizeKB} KB)`;
             link.style.display = "block";
             link.style.marginTop = "10px";
 
