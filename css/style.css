@@ -1,227 +1,150 @@
-here/* General Styles */
+/* ===== BASE ===== */
 body {
-  font-family: "Poppins", sans-serif;
   margin: 0;
-  background-color: #e0dfff;
-  color: #171717;
+  font-family: Arial, sans-serif;
+  background: #f6f7fb;
+  color: #333;
 }
 
-header {
+a {
+  text-decoration: none;
+}
+
+/* ===== HEADER ===== */
+.topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #5b4fff;
   padding: 15px 20px;
+  background: #5b4fff;
   color: white;
+  position: relative;
 }
 
-/* Hamburger Menu */
+.logo {
+  font-size: 1.5em;
+}
+
+/* ===== MENU BUTTON (Uiverse) ===== */
 .menuButton {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 3em;
+  height: 3em;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 13%;
-  width: 3.5em;
-  height: 3.5em;
-  border-radius: 0.5em;
   background: #171717;
-  border: 1px solid #171717;
-  box-shadow: inset 4px 4px 12px #3a3a3a,
-              inset -4px -4px 12px #000000;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .menuButton span {
-  width: 30px;
+  width: 28px;
   height: 4px;
-  background: rgb(200,200,200);
-  border-radius: 100px;
-  transition: 0.3s ease;
+  background: #fff;
+  border-radius: 10px;
+  transition: 0.3s;
 }
 
-input[type="checkbox"] {
+.menuButton input {
   display: none;
 }
 
-input[type="checkbox"]:checked ~ span.top {
+/* Animation */
+#menuToggle:checked ~ .menuButton .top {
   transform: translateY(10px) rotate(45deg);
 }
-input[type="checkbox"]:checked ~ span.mid {
+#menuToggle:checked ~ .menuButton .mid {
   opacity: 0;
 }
-input[type="checkbox"]:checked ~ span.bot {
+#menuToggle:checked ~ .menuButton .bot {
   transform: translateY(-10px) rotate(-45deg);
 }
 
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
-  background: #5b4fff;
-  padding: 50px 20px;
-  display: flex;
+/* ===== MENU PANEL ===== */
+.menu-panel {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  background: #0D1117;
+  border-radius: 8px;
+  padding: 10px;
+  display: none;
   flex-direction: column;
-  transition: 0.3s;
-  z-index: 100;
+  width: 200px;
 }
 
-.sidebar.active {
-  left: 0;
+#menuToggle:checked ~ .menu-panel {
+  display: flex;
 }
 
-.sidebar .close-btn {
+.value {
   background: transparent;
   border: none;
   color: white;
-  font-size: 2em;
-  align-self: flex-end;
+  padding: 12px;
+  text-align: left;
   cursor: pointer;
-  margin-bottom: 20px;
+  border-radius: 5px;
 }
 
-.sidebar ul {
+.value:hover {
+  background: #21262C;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: #e6e0ff;
+}
+
+.hero h2 {
+  color: #5b4fff;
+  font-size: 2em;
+}
+
+.buttons {
+  margin-top: 25px;
+}
+
+.tool-btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 30px;
+  background: #5b4fff;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.tool-btn:hover {
+  background: #4033cc;
+}
+
+/* ===== FEATURES ===== */
+.features {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.features ul {
   list-style: none;
   padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
-.sidebar ul li a {
+.features li {
+  margin: 10px 0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #222;
   color: white;
-  text-decoration: none;
-  font-size: 1.2em;
-  font-weight: 600;
-  padding: 10px;
-  border-radius: 6px;
-  transition: 0.2s;
-}
-
-.sidebar ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Tools Section */
-.tools {
   text-align: center;
-  margin-top: 50px;
+  padding: 15px;
 }
-
-.tools h2 {
-  font-size: 2em;
-  color: #5b4fff;
-}
-
-.tools p {
-  margin: 10px 0 20px 0;
-  font-size: 1.1em;
-}
-
-.tools button {
-  display: block;
-  margin: 10px auto;
-  padding: 15px 25px;
-  font-size: 1em;
-  background-color: #5b4fff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.tools button:hover {
-  background-color: #4633d1;
-}
-
-/* Loader Animation */
-.loader-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  width: auto;
-  margin: 2rem auto;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.6em;
-  font-weight: 600;
-  user-select: none;
-  color: #fff;
-  scale: 2;
-}
-
-.loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  background-color: transparent;
-  mask: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 6px,
-    black 7px,
-    black 8px
-  );
-}
-
-.loader::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%),
-    radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%),
-    radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%),
-    radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%),
-    radial-gradient(circle at 55% 45%, #00f 0%, transparent 45%);
-  mask: radial-gradient(
-    circle at 50% 50%,
-    transparent 0%,
-    transparent 10%,
-    black 25%
-  );
-  animation:
-    transform-animation 2s infinite alternate,
-    opacity-animation 4s infinite;
-  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
-}
-
-@keyframes transform-animation {
-  0% {
-    transform: translate(-55%);
-  }
-  100% {
-    transform: translate(55%);
-  }
-}
-
-@keyframes opacity-animation {
-  0%, 100% { opacity: 0; }
-  15% { opacity: 1; }
-  65% { opacity: 0; }
-}
-
-.loader-letter {
-  display: inline-block;
-  opacity: 0;
-  animation: loader-letter-anim 4s infinite linear;
-  z-index: 2;
-}
-
-@keyframes loader-letter-anim {
-  0% { opacity: 0; }
-  5% { opacity: 1; text-shadow: 0 0 4px #fff; transform: scale(1.1) translateY(-2px);}
-  20% { opacity: 0.2; }
-  100% { opacity: 0; }
-    }
