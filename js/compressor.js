@@ -1,4 +1,4 @@
-function compressImage() {
+document.getElementById("compress-btn").addEventListener("click", function() {
   const file = document.getElementById("compress-input").files[0];
   if (!file) return alert("Select an image");
 
@@ -12,6 +12,6 @@ function compressImage() {
     },
     error(err) {
       alert("Compression failed: " + err.message);
-    },
+    }
   });
-}
+});
