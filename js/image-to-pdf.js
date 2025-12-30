@@ -1,21 +1,31 @@
+// Make sure you included jsPDF library in your HTML
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-// Function to convert images to PDF
-function convertToPDF() {
-    const input = document.getElementById('image-to-pdf-input');
+async function convertToPDF() {
+    const input = document.getElementById("image-to-pdf-input");
     if (input.files.length === 0) {
         alert("Please select an image!");
         return;
     }
 
-    const img = input.files[0];
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const file = input.files[0];
     const reader = new FileReader();
-    
-    reader.onload = function(e) {
+
+    reader.onload = function (e) {
         const imgData = e.target.result;
-        const pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', 10, 10, 180, 160); // Adjust size
-        pdf.save("converted.pdf");
+
+        const img = new Image();
+        img.src = imgData;
+        img.onload = function () {
+            const imgWidth = 190; // PDF width
+            const imgHeight = (img.height * imgWidth) / img.width;
+            doc.addImage(img, 'JPEG', 10, 10, imgWidth, imgHeight);
+            doc.save("converted.pdf");
+        };
     };
 
-    reader.readAsDataURL(img);
-}
+    reader.readAsDataURL(file);
+                }
