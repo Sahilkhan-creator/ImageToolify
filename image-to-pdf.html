@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Image to PDF - ImageToolify</title>
+<meta name="description" content="Convert JPG or PNG images to PDF online for free. Fast, browser-based tool.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,12 +15,16 @@
     </nav>
 </header>
 
-<section class="tool-section">
-    <h2>Convert your images to PDF</h2>
-    <input type="file" id="imageInput" multiple>
-    <button onclick="convertToPDF()">Convert</button>
-</section>
+<main class="container">
+    <section class="tool-section">
+        <h2>Convert Images to PDF</h2>
+        <input type="file" id="image-to-pdf-input" accept="image/*">
+        <button onclick="convertToPDF()">Convert to PDF</button>
+        <p class="note">Your image is processed locally. No files are uploaded to a server.</p>
+    </section>
+</main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="js/image-to-pdf.js"></script>
 </body>
 </html>
