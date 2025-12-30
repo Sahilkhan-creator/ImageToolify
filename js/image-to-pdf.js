@@ -1,31 +1,23 @@
-// Make sure you included jsPDF library in your HTML
-// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+// Using jsPDF (already included in your HTML)
+function convertToPDF() {
+  const input = document.getElementById("image-to-pdf-input");
+  if (!input.files[0]) return alert("Select an image");
 
-async function convertToPDF() {
-    const input = document.getElementById("image-to-pdf-input");
-    if (input.files.length === 0) {
-        alert("Please select an image!");
-        return;
-    }
+  const file = input.files[0];
+  const reader = new FileReader();
 
+  reader.onload = function (e) {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    const pdf = new jsPDF();
 
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-        const imgData = e.target.result;
-
-        const img = new Image();
-        img.src = imgData;
-        img.onload = function () {
-            const imgWidth = 190; // PDF width
-            const imgHeight = (img.height * imgWidth) / img.width;
-            doc.addImage(img, 'JPEG', 10, 10, imgWidth, imgHeight);
-            doc.save("converted.pdf");
-        };
+    const img = new Image();
+    img.src = e.target.result;
+    img.onload = function () {
+      const width = pdf.internal.pageSize.getWidth();
+      const height = (img.height * width) / img.width;
+      pdf.addImage(img, "JPEG", 0, 0, width, height);
+      pdf.save("converted.pdf");
     };
-
-    reader.readAsDataURL(file);
-                }
+  };
+  reader.readAsDataURL(file);
+}
