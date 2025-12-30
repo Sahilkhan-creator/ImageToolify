@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image to PDF | ImageToolify</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <header>
@@ -21,7 +20,7 @@
     <section class="tool-section">
       <h2>Convert Image to PDF</h2>
       <input type="file" id="image-to-pdf-input" accept="image/*">
-      <button onclick="convertToPDF()">Convert to PDF</button>
+      <button id="convert-btn">Convert to PDF</button>
       <p>Your image is processed locally. No files are uploaded to a server.</p>
     </section>
   </main>
@@ -30,31 +29,8 @@
     <p>&copy; 2025 ImageToolify. All rights reserved.</p>
   </footer>
 
-  <script>
-    // JS for Image to PDF
-    function convertToPDF() {
-      const input = document.getElementById("image-to-pdf-input");
-      if (!input.files[0]) return alert("Select an image");
-
-      const file = input.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
-
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = function() {
-          const width = pdf.internal.pageSize.getWidth();
-          const height = (img.height * width) / img.width;
-          pdf.addImage(img, "JPEG", 0, 0, width, height);
-          pdf.save("converted.pdf");
-        };
-      };
-
-      reader.readAsDataURL(file);
-    }
-  </script>
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/image-to-pdf.js"></script>
 </body>
 </html>
