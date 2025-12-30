@@ -3,16 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slide Menu</title>
-
-  <!-- Link your CSS file -->
+  <title>ImageToolify</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===============================
+       From Uiverse.io by Laurits123456
+       pushing a hamburger menu into a pillow texture like background
+       =============================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e6e0ff;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HIDE CHECKBOX */
+    #menuToggle {
+      display: none;
+    }
+
+    /* ===== MENU BUTTON ===== */
+    .menuButton {
+      position: fixed;
+      top: 20px;
+      right: 20px; /* adjust to right like your screenshot */
+      z-index: 1001;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 13%;
+
+      width: 3.5em;
+      height: 3.5em;
+      border-radius: 0.5em;
+
+      background: #171717;
+      border: 1px solid #171717;
+      cursor: pointer;
+
+      transition: all 0.3s ease;
+      box-shadow: inset 4px 4px 12px #3a3a3a,
+                  inset -4px -4px 12px #000000;
+    }
+
+    .menuButton span {
+      width: 30px;
+      height: 4px;
+      background: rgb(200,200,200);
+      border-radius: 100px;
+      transition: 0.3s ease;
+    }
+
+    /* Hamburger animation */
+    #menuToggle:checked + .menuButton span.top {
+      transform: translateY(290%) rotate(45deg);
+      width: 40px;
+    }
+
+    #menuToggle:checked + .menuButton span.bot {
+      transform: translateY(-270%) rotate(-45deg);
+      width: 40px;
+      box-shadow: 0 0 10px #495057;
+    }
+
+    #menuToggle:checked + .menuButton span.mid {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+
+    /* ===============================
+       SLIDE MENU
+       =============================== */
+    .sideMenu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 250px;
+      height: 100vh;
+
+      background: #111;
+      padding-top: 90px;
+
+      transition: 0.35s ease;
+      z-index: 1000;
+    }
+
+    /* SHOW MENU */
+    #menuToggle:checked ~ .sideMenu {
+      left: 0;
+    }
+
+    /* Menu links */
+    .sideMenu a {
+      display: block;
+      padding: 15px 25px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background 0.2s ease;
+    }
+
+    .sideMenu a:hover {
+      background: #222;
+    }
+
+    /* PAGE HEADER */
+    header {
+      background: #6c63ff;
+      padding: 20px;
+      text-align: left;
+      color: white;
+    }
+
+    header h1 {
+      display: inline-block;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    /* MAIN CONTENT */
+    main {
+      padding: 100px 20px 20px 20px;
+      text-align: center;
+      color: #3a3a3a;
+    }
+
+    main h2 {
+      font-size: 28px;
+      color: #6c63ff;
+      margin-bottom: 20px;
+    }
+
+    main p {
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    main button {
+      display: block;
+      margin: 10px auto;
+      padding: 12px 25px;
+      background: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    main button:hover {
+      background: #574fd6;
+    }
+  </style>
 </head>
 <body>
 
+  <!-- MENU TOGGLE -->
+  <input type="checkbox" id="menuToggle">
+
   <!-- MENU BUTTON -->
-  <label class="menuButton">
-    <input type="checkbox" id="menuToggle">
+  <label class="menuButton" for="menuToggle">
     <span class="top"></span>
     <span class="mid"></span>
     <span class="bot"></span>
@@ -26,11 +185,18 @@
     <a href="#contact">Contact</a>
   </div>
 
-  <!-- PAGE CONTENT (optional) -->
-  <div style="padding: 100px 20px; color: white;">
-    <h1>Home Page</h1>
-    <p>Click the hamburger menu to open the slide menu.</p>
-  </div>
+  <!-- HEADER -->
+  <header>
+    <h1>ImageToolify</h1>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h2>Fast & Free Image Tools</h2>
+    <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
+    <button>Image to PDF</button>
+    <button>Image Compressor</button>
+  </main>
 
 </body>
-</html>
+  </html>
