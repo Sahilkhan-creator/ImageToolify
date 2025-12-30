@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ImageToolify</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     /* ===============================
        From Uiverse.io by Laurits123456
@@ -23,7 +22,7 @@
       min-height: 100vh;
     }
 
-    /* HIDE CHECKBOX */
+    /* ===== HIDE CHECKBOX ===== */
     #menuToggle {
       display: none;
     }
@@ -32,7 +31,7 @@
     .menuButton {
       position: fixed;
       top: 20px;
-      right: 20px; /* adjust to right like your screenshot */
+      right: 20px;
       z-index: 1001;
 
       display: flex;
@@ -94,14 +93,17 @@
 
       transition: 0.35s ease;
       z-index: 1000;
+
+      pointer-events: none; /* disable clicks when hidden */
     }
 
     /* SHOW MENU */
     #menuToggle:checked ~ .sideMenu {
       left: 0;
+      pointer-events: auto; /* enable clicks when open */
     }
 
-    /* Menu links */
+    /* MENU LINKS */
     .sideMenu a {
       display: block;
       padding: 15px 25px;
@@ -115,7 +117,9 @@
       background: #222;
     }
 
-    /* PAGE HEADER */
+    /* ===============================
+       HEADER
+       =============================== */
     header {
       background: #6c63ff;
       padding: 20px;
@@ -129,7 +133,9 @@
       font-size: 24px;
     }
 
-    /* MAIN CONTENT */
+    /* ===============================
+       MAIN CONTENT
+       =============================== */
     main {
       padding: 100px 20px 20px 20px;
       text-align: center;
@@ -179,10 +185,10 @@
 
   <!-- SLIDE MENU -->
   <div class="sideMenu">
-    <a href="#about">About</a>
-    <a href="#privacy">Privacy</a>
-    <a href="#terms">Terms</a>
-    <a href="#contact">Contact</a>
+    <a href="#about" onclick="document.getElementById('menuToggle').checked=false;">About</a>
+    <a href="#privacy" onclick="document.getElementById('menuToggle').checked=false;">Privacy</a>
+    <a href="#terms" onclick="document.getElementById('menuToggle').checked=false;">Terms</a>
+    <a href="#contact" onclick="document.getElementById('menuToggle').checked=false;">Contact</a>
   </div>
 
   <!-- HEADER -->
@@ -194,9 +200,9 @@
   <main>
     <h2>Fast & Free Image Tools</h2>
     <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
-    <button>Image to PDF</button>
-    <button>Image Compressor</button>
+    <button onclick="alert('Image to PDF clicked!')">Image to PDF</button>
+    <button onclick="alert('Image Compressor clicked!')">Image Compressor</button>
   </main>
 
 </body>
-  </html>
+</html>
