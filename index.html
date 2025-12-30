@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ImageToolify</title>
 <style>
-/* ===============================
-   From Uiverse.io by Laurits123456
-   Hamburger menu with pillow texture
-   =============================== */
-
 /* RESET */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: Arial, Helvetica, sans-serif; background: #e6e0ff; min-height:100vh; }
@@ -36,10 +31,11 @@ body { font-family: Arial, Helvetica, sans-serif; background: #e6e0ff; min-heigh
 /* SLIDE MENU */
 .sideMenu {
   position: fixed; top:0; left:-260px; width:250px; height:100vh;
-  background:#111; padding-top:90px; transition:0.35s ease; z-index:1000;
-  pointer-events: none;
+  background:#111; padding-top:90px; transition:0.35s ease;
+  z-index:1000; pointer-events:none;
 }
 #menuToggle:checked ~ .sideMenu { left:0; pointer-events:auto; }
+
 .sideMenu a {
   display:block; padding:15px 25px; color:#fff; text-decoration:none; font-size:18px; transition:0.2s ease;
 }
@@ -60,7 +56,6 @@ main a button, main button {
   border-radius:8px; font-size:16px; cursor:pointer; transition:0.2s ease;
 }
 main a button:hover, main button:hover { background:#574fd6; }
-
 </style>
 </head>
 <body>
@@ -93,7 +88,7 @@ main a button:hover, main button:hover { background:#574fd6; }
   <h2>Fast & Free Image Tools</h2>
   <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
 
-  <!-- Buttons with links -->
+  <!-- Buttons linked to actual pages -->
   <a href="image-to-pdf.html"><button>Image to PDF</button></a>
   <a href="compressor.html"><button>Image Compressor</button></a>
 </main>
