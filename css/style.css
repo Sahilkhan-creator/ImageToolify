@@ -1,15 +1,3 @@
-/* ===== BASE ===== */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f6f7fb;
-  color: #333;
-}
-
-a {
-  text-decoration: none;
-}
-
 /* ===== HEADER ===== */
 .topbar {
   display: flex;
@@ -25,75 +13,75 @@ a {
   font-size: 1.5em;
 }
 
-/* ===== MENU BUTTON (Uiverse) ===== */
-.menuButton {
+/* ===== HAMBURGER ===== */
+.hamburger {
+  width: 30px;
+  height: 22px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: 3em;
-  height: 3em;
-  justify-content: center;
-  align-items: center;
-  background: #171717;
-  border-radius: 8px;
+  justify-content: space-between;
   cursor: pointer;
 }
 
-.menuButton span {
-  width: 28px;
+.hamburger span {
+  display: block;
   height: 4px;
-  background: #fff;
-  border-radius: 10px;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
   transition: 0.3s;
 }
 
-.menuButton input {
-  display: none;
-}
-
-/* Animation */
-#menuToggle:checked ~ .menuButton .top {
-  transform: translateY(10px) rotate(45deg);
-}
-#menuToggle:checked ~ .menuButton .mid {
-  opacity: 0;
-}
-#menuToggle:checked ~ .menuButton .bot {
-  transform: translateY(-10px) rotate(-45deg);
-}
-
-/* ===== MENU PANEL ===== */
-.menu-panel {
-  position: absolute;
-  top: 70px;
-  right: 20px;
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
   background: #0D1117;
-  border-radius: 8px;
-  padding: 10px;
-  display: none;
-  flex-direction: column;
-  width: 200px;
-}
-
-#menuToggle:checked ~ .menu-panel {
+  padding: 20px;
   display: flex;
+  flex-direction: column;
+  transition: 0.3s;
+  z-index: 100;
 }
 
-.value {
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar .close-btn {
   background: transparent;
   border: none;
   color: white;
-  padding: 12px;
-  text-align: left;
+  font-size: 2em;
+  align-self: flex-end;
   cursor: pointer;
-  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
-.value:hover {
-  background: #21262C;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* ===== HERO ===== */
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+.sidebar ul li a:hover {
+  color: #5b4fff;
+}
+
+/* ===== MAIN CONTENT ===== */
 .hero {
   text-align: center;
   padding: 60px 20px;
@@ -121,24 +109,6 @@ a {
 
 .tool-btn:hover {
   background: #4033cc;
-}
-
-/* ===== FEATURES ===== */
-.features {
-  max-width: 900px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-}
-
-.features ul {
-  list-style: none;
-  padding: 0;
-}
-
-.features li {
-  margin: 10px 0;
 }
 
 /* ===== FOOTER ===== */
