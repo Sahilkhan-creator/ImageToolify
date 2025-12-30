@@ -3,68 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ImageToolify – Free Image Tools</title>
-  <link rel="stylesheet" href="css/style.css">
+  <title>ImageToolify</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- jsPDF and Compressor.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.1.1/compressor.min.js"></script>
 </head>
 <body>
 
-<header class="topbar">
-  <h1 class="logo">ImageToolify</h1>
+  <!-- Header -->
+  <header>
+    <h1>ImageToolify</h1>
+    <!-- Hamburger Menu -->
+    <label class="menuButton" for="check">
+      <input type="checkbox" id="check">
+      <span class="top"></span>
+      <span class="mid"></span>
+      <span class="bot"></span>
+    </label>
+  </header>
 
-  <!-- Hamburger Button -->
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeBtn">×</button>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms & Conditions</a></li>
+    </ul>
   </div>
-</header>
 
-<!-- Sidebar Menu -->
-<div class="sidebar" id="sidebar">
-  <button class="close-btn" id="closeSidebar">&times;</button>
-  <ul>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="privacy.html">Privacy Policy</a></li>
-    <li><a href="terms.html">Terms & Conditions</a></li>
-  </ul>
-</div>
+  <!-- Main Content -->
+  <main>
+    <section class="tools">
+      <h2>Fast & Free Image Tools</h2>
+      <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
+      <button id="pdfBtn">Image to PDF</button>
+      <button id="compressBtn">Image Compressor</button>
+    </section>
 
-<main>
-  <section class="hero">
-    <h2>Fast & Free Image Tools</h2>
-    <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
-    <div class="buttons">
-      <a href="image-to-pdf.html" class="tool-btn">Image to PDF</a>
-      <a href="image-compressor.html" class="tool-btn">Image Compressor</a>
+    <!-- Loader Animation -->
+    <div class="loader-wrapper" id="loader" style="display:none;">
+      <span class="loader-letter">G</span>
+      <span class="loader-letter">e</span>
+      <span class="loader-letter">n</span>
+      <span class="loader-letter">e</span>
+      <span class="loader-letter">r</span>
+      <span class="loader-letter">a</span>
+      <span class="loader-letter">t</span>
+      <span class="loader-letter">i</span>
+      <span class="loader-letter">n</span>
+      <span class="loader-letter">g</span>
+      <div class="loader"></div>
     </div>
-  </section>
-</main>
+  </main>
 
-<footer>
-  <p>© 2025 ImageToolify. All rights reserved.</p>
-</footer>
-
-<script>
-  const hamburger = document.getElementById('hamburger');
-  const sidebar = document.getElementById('sidebar');
-  const closeSidebar = document.getElementById('closeSidebar');
-
-  hamburger.addEventListener('click', () => {
-    sidebar.classList.add('active');
-  });
-
-  closeSidebar.addEventListener('click', () => {
-    sidebar.classList.remove('active');
-  });
-
-  // Close sidebar when clicking outside
-  window.addEventListener('click', (e) => {
-    if (e.target === sidebar) {
-      sidebar.classList.remove('active');
-    }
-  });
-</script>
-
+  <script src="script.js"></script>
 </body>
-</html>
+        </html>
