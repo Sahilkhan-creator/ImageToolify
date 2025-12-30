@@ -1,46 +1,68 @@
-/* ===== HEADER ===== */
-.topbar {
+here/* General Styles */
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background-color: #e0dfff;
+  color: #171717;
+}
+
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #5b4fff;
   padding: 15px 20px;
-  background: #5b4fff;
   color: white;
-  position: relative;
 }
 
-.logo {
-  font-size: 1.5em;
-}
-
-/* ===== HAMBURGER ===== */
-.hamburger {
-  width: 30px;
-  height: 22px;
+/* Hamburger Menu */
+.menuButton {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 13%;
+  width: 3.5em;
+  height: 3.5em;
+  border-radius: 0.5em;
+  background: #171717;
+  border: 1px solid #171717;
+  box-shadow: inset 4px 4px 12px #3a3a3a,
+              inset -4px -4px 12px #000000;
   cursor: pointer;
 }
 
-.hamburger span {
-  display: block;
+.menuButton span {
+  width: 30px;
   height: 4px;
-  width: 100%;
-  background: white;
-  border-radius: 2px;
-  transition: 0.3s;
+  background: rgb(200,200,200);
+  border-radius: 100px;
+  transition: 0.3s ease;
 }
 
-/* ===== SIDEBAR ===== */
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked ~ span.top {
+  transform: translateY(10px) rotate(45deg);
+}
+input[type="checkbox"]:checked ~ span.mid {
+  opacity: 0;
+}
+input[type="checkbox"]:checked ~ span.bot {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+/* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -250px;
+  left: -250px;
   width: 250px;
   height: 100%;
-  background: #0D1117;
-  padding: 20px;
+  background: #5b4fff;
+  padding: 50px 20px;
   display: flex;
   flex-direction: column;
   transition: 0.3s;
@@ -48,7 +70,7 @@
 }
 
 .sidebar.active {
-  right: 0;
+  left: 0;
 }
 
 .sidebar .close-btn {
@@ -65,56 +87,141 @@
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.sidebar ul li {
-  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .sidebar ul li a {
   color: white;
   text-decoration: none;
-  font-size: 1.1em;
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  transition: 0.2s;
 }
 
 .sidebar ul li a:hover {
-  color: #5b4fff;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* ===== MAIN CONTENT ===== */
-.hero {
+/* Tools Section */
+.tools {
   text-align: center;
-  padding: 60px 20px;
-  background: #e6e0ff;
+  margin-top: 50px;
 }
 
-.hero h2 {
-  color: #5b4fff;
+.tools h2 {
   font-size: 2em;
+  color: #5b4fff;
 }
 
-.buttons {
-  margin-top: 25px;
+.tools p {
+  margin: 10px 0 20px 0;
+  font-size: 1.1em;
 }
 
-.tool-btn {
-  display: inline-block;
-  margin: 10px;
-  padding: 15px 30px;
-  background: #5b4fff;
+.tools button {
+  display: block;
+  margin: 10px auto;
+  padding: 15px 25px;
+  font-size: 1em;
+  background-color: #5b4fff;
   color: white;
+  border: none;
   border-radius: 6px;
-  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.tool-btn:hover {
-  background: #4033cc;
+.tools button:hover {
+  background-color: #4633d1;
 }
 
-/* ===== FOOTER ===== */
-footer {
-  background: #222;
-  color: white;
-  text-align: center;
-  padding: 15px;
+/* Loader Animation */
+.loader-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  width: auto;
+  margin: 2rem auto;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.6em;
+  font-weight: 600;
+  user-select: none;
+  color: #fff;
+  scale: 2;
 }
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background-color: transparent;
+  mask: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 6px,
+    black 7px,
+    black 8px
+  );
+}
+
+.loader::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 50% 50%, #ff0 0%, transparent 50%),
+    radial-gradient(circle at 45% 45%, #f00 0%, transparent 45%),
+    radial-gradient(circle at 55% 55%, #0ff 0%, transparent 45%),
+    radial-gradient(circle at 45% 55%, #0f0 0%, transparent 45%),
+    radial-gradient(circle at 55% 45%, #00f 0%, transparent 45%);
+  mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 10%,
+    black 25%
+  );
+  animation:
+    transform-animation 2s infinite alternate,
+    opacity-animation 4s infinite;
+  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+}
+
+@keyframes transform-animation {
+  0% {
+    transform: translate(-55%);
+  }
+  100% {
+    transform: translate(55%);
+  }
+}
+
+@keyframes opacity-animation {
+  0%, 100% { opacity: 0; }
+  15% { opacity: 1; }
+  65% { opacity: 0; }
+}
+
+.loader-letter {
+  display: inline-block;
+  opacity: 0;
+  animation: loader-letter-anim 4s infinite linear;
+  z-index: 2;
+}
+
+@keyframes loader-letter-anim {
+  0% { opacity: 0; }
+  5% { opacity: 1; text-shadow: 0 0 4px #fff; transform: scale(1.1) translateY(-2px);}
+  20% { opacity: 0.2; }
+  100% { opacity: 0; }
+    }
