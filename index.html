@@ -20,10 +20,10 @@
 
   <!-- SLIDE MENU -->
   <div class="sideMenu">
-    <a href="#about">About</a>
-    <a href="#privacy">Privacy</a>
-    <a href="#terms">Terms</a>
-    <a href="#contact">Contact</a>
+    <a href="#about" onclick="document.getElementById('menuToggle').checked=false;">About</a>
+    <a href="#privacy" onclick="document.getElementById('menuToggle').checked=false;">Privacy</a>
+    <a href="#terms" onclick="document.getElementById('menuToggle').checked=false;">Terms</a>
+    <a href="#contact" onclick="document.getElementById('menuToggle').checked=false;">Contact</a>
   </div>
 
   <!-- HEADER -->
@@ -35,9 +35,9 @@
   <main>
     <h2>Fast & Free Image Tools</h2>
     <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
-    <button>Image to PDF</button>
-    <button>Image Compressor</button>
+    <button onclick="alert('Image to PDF clicked!')">Image to PDF</button>
+    <button onclick="alert('Image Compressor clicked!')">Image Compressor</button>
   </main>
 
 </body>
-mahtml
+</html>
