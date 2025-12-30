@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ImageToolify – Free Image Tools</title>
-  <meta name="description" content="Free online image tools: Image to PDF and Image Compressor. Fast, secure and browser-based.">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,42 +11,33 @@
 <header class="topbar">
   <h1 class="logo">ImageToolify</h1>
 
-  <!-- Menu Button -->
-  <label class="menuButton" for="menuToggle">
-    <input type="checkbox" id="menuToggle">
-    <span class="top"></span>
-    <span class="mid"></span>
-    <span class="bot"></span>
-  </label>
-
-  <!-- Menu Panel -->
-  <div class="menu-panel">
-    <button class="value" onclick="location.href='about.html'">About</button>
-    <button class="value" onclick="location.href='contact.html'">Contact</button>
-    <button class="value" onclick="location.href='privacy.html'">Privacy Policy</button>
-    <button class="value" onclick="location.href='terms.html'">Terms & Conditions</button>
+  <!-- Hamburger Button -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
 </header>
+
+<!-- Sidebar Menu -->
+<div class="sidebar" id="sidebar">
+  <button class="close-btn" id="closeSidebar">&times;</button>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms & Conditions</a></li>
+  </ul>
+</div>
 
 <main>
   <section class="hero">
     <h2>Fast & Free Image Tools</h2>
     <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
-
     <div class="buttons">
       <a href="image-to-pdf.html" class="tool-btn">Image to PDF</a>
       <a href="image-compressor.html" class="tool-btn">Image Compressor</a>
     </div>
-  </section>
-
-  <section class="features">
-    <h3>Why ImageToolify?</h3>
-    <ul>
-      <li>100% browser-based</li>
-      <li>No file uploads</li>
-      <li>Fast & secure</li>
-      <li>SEO & AdSense ready</li>
-    </ul>
   </section>
 </main>
 
@@ -55,5 +45,26 @@
   <p>© 2025 ImageToolify. All rights reserved.</p>
 </footer>
 
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
+
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.add('active');
+  });
+
+  closeSidebar.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+
+  // Close sidebar when clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === sidebar) {
+      sidebar.classList.remove('active');
+    }
+  });
+</script>
+
 </body>
-  </html>
+</html>
