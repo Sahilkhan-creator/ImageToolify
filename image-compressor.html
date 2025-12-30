@@ -1,29 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Compressor - ImageToolify</title>
-<meta name="description" content="Compress images online for free and reduce file size without losing quality.">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor | ImageToolify</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.1.1/compressor.min.js"></script>
 </head>
 <body>
-<header>
-    <h1>Image Compressor</h1>
+  <header>
+    <h1>ImageToolify</h1>
     <nav>
-        <a href="index.html">Home</a>
+      <a href="index.html">Home</a>
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="image-compressor.html">Image Compressor</a>
     </nav>
-</header>
+  </header>
 
-<main class="container">
+  <main>
     <section class="tool-section">
-        <h2>Compress Your Images</h2>
-        <input type="file" id="compress-input" accept="image/*">
-        <button onclick="compressImage()">Compress Image</button>
-        <p class="note">Compression happens locally in your browser. Your files are never uploaded.</p>
+      <h2>Compress Your Images</h2>
+      <input type="file" id="compress-input" accept="image/*">
+      <button onclick="compressImage()">Compress Image</button>
+      <p>Your image is processed locally. No files are uploaded to a server.</p>
     </section>
-</main>
+  </main>
 
-<script src="js/compressor.js"></script>
+  <footer>
+    <p>&copy; 2025 ImageToolify. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // JS for Image Compression
+    function compressImage() {
+      const file = document.getElementById("compress-input").files[0];
+      if (!file) return alert("Select an image");
+
+      new Compressor(file, {
+        quality: 0.7,
+        success(result) {
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(result);
+          link.download = "compressed_" + file.name;
+          link.click();
+        },
+        error(err) {
+          alert("Compression failed: " + err.message);
+        }
+      });
+    }
+  </script>
 </body>
 </html>
