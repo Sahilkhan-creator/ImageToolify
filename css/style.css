@@ -1,56 +1,46 @@
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
 body {
-  margin: 0;
-  background: #f5f7fb;
-  color: #333;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+    color: #333;
 }
 
 header {
-  background: #4f46e5;
-  color: white;
-  padding: 15px;
-  text-align: center;
+    background: #5b4fff;
+    color: white;
+    padding: 15px;
+    text-align: center;
 }
 
-nav a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-  font-weight: bold;
+header nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
 }
 
-.container {
-  max-width: 900px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 8px;
+.intro, .tools, .tool-section {
+    padding: 20px;
+    text-align: center;
 }
 
-h1, h2 {
-  color: #4f46e5;
+.tool-btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 30px;
+    background: #5b4fff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
-input, button {
-  padding: 10px;
-  margin-top: 10px;
-}
-
-button {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.tool-btn:hover {
+    background: #4033cc;
 }
 
 footer {
-  text-align: center;
-  padding: 20px;
-  background: #e5e7eb;
-  margin-top: 40px;
-}￼Enter
+    background: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
