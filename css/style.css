@@ -17,16 +17,16 @@ body {
   min-height: 100vh;
 }
 
-/* ===== HIDE CHECKBOX ===== */
+/* HIDE CHECKBOX */
 #menuToggle {
   display: none;
 }
 
-/* ===== MENU BUTTON ===== */
+/* MENU BUTTON */
 .menuButton {
   position: fixed;
   top: 20px;
-  right: 20px; /* position to the right */
+  right: 20px;
   z-index: 1001;
 
   display: flex;
@@ -88,11 +88,14 @@ body {
 
   transition: 0.35s ease;
   z-index: 1000;
+
+  pointer-events: none; /* Disable interaction when closed */
 }
 
 /* SHOW MENU */
 #menuToggle:checked ~ .sideMenu {
   left: 0;
+  pointer-events: auto; /* Enable interaction when open */
 }
 
 /* MENU LINKS */
@@ -109,9 +112,7 @@ body {
   background: #222;
 }
 
-/* ===============================
-   HEADER
-   =============================== */
+/* HEADER */
 header {
   background: #6c63ff;
   padding: 20px;
@@ -125,9 +126,7 @@ header h1 {
   font-size: 24px;
 }
 
-/* ===============================
-   MAIN CONTENT
-   =============================== */
+/* MAIN CONTENT */
 main {
   padding: 100px 20px 20px 20px;
   text-align: center;
@@ -160,4 +159,4 @@ main button {
 
 main button:hover {
   background: #574fd6;
-   }
+}
