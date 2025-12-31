@@ -1,152 +1,137 @@
-/* ===== HEADER ===== */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #5b4fff;
-  color: white;
-  position: relative;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.logo {
-  font-size: 1.5em;
+body {
+  background: #ece9ff;
+  color: #222;
 }
 
-/* ===== HAMBURGER ===== */
-.hamburger {
-  width: 30px;
-  height: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.hamburger span {
-  display: block;
-  height: 4px;
-  width: 100%;
-  background: white;
-  border-radius: 2px;
-  transition: 0.3s;
-}
-
-/* ===== SIDEBAR (FIXED – HIDDEN BY DEFAULT) ===== */
+/* ===== SIDEBAR MENU ===== */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -250px;
-  width: 250px;
-  height: 100%;
-  background: #0D1117;
-  padding: 20px;
-  display: none; /* FIX: hidden by default */
-  flex-direction: column;
-  transition: right 0.3s ease;
-  z-index: 100;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  background: #111;
+  padding-top: 20px;
 }
 
-.sidebar.active {
-  display: flex; /* FIX: only visible when active */
-  right: 0;
-}
-
-.sidebar .close-btn {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 2em;
-  align-self: flex-end;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar ul li {
-  margin: 15px 0;
-}
-
-.sidebar ul li a {
-  color: white;
+.sidebar a {
+  display: block;
+  color: #ccc;
   text-decoration: none;
-  font-size: 1.1em;
+  padding: 12px 20px;
+  font-size: 14px;
 }
 
-.sidebar ul li a:hover {
-  color: #5b4fff;
+.sidebar a:hover {
+  background: #222;
+  color: #fff;
+}
+
+/* ===== PROFILE BOX ===== */
+.profile-box {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* ===== MAIN CONTENT ===== */
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-  background: #e6e0ff;
+.container {
+  margin-left: 220px;
+  padding: 30px 20px;
+  max-width: 800px;
 }
 
-.hero h2 {
-  color: #5b4fff;
-  font-size: 2em;
+h1, h2 {
+  margin-bottom: 10px;
 }
 
-.buttons {
-  margin-top: 25px;
+p {
+  margin-bottom: 15px;
+  color: #555;
 }
 
-.tool-btn {
+/* ===== HOME BUTTONS ===== */
+.home-buttons {
+  margin-top: 20px;
+}
+
+.home-buttons .btn {
   display: inline-block;
-  margin: 10px;
-  padding: 15px 30px;
-  background: #5b4fff;
-  color: white;
+  background: #5b5be6;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 18px;
+  margin-right: 10px;
   border-radius: 6px;
-  font-weight: bold;
+  font-size: 14px;
 }
 
-.tool-btn:hover {
-  background: #4033cc;
+.home-buttons .btn:hover {
+  background: #4747c9;
 }
 
-/* ===== FOOTER ===== */
-footer {
-  background: #222;
-  color: white;
-  text-align: center;
-  padding: 15px;
-}
-.seo-content {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-  color: #222;
-  line-height: 1.7;
+/* ===== FORM ELEMENTS ===== */
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-.seo-content h2,
-.seo-content h3 {
-  color: #5b4fff;
-  margin-top: 30px;
+textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
-.seo-content ul {
-  margin: 15px 0;
-  padding-left: 20px;
+/* ===== BUTTONS ===== */
+button {
+  background: #5b5be6;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.seo-content ul li {
-  margin: 8px 0;
+button:hover {
+  background: #4747c9;
 }
 
-.seo-content ol {
-  padding-left: 20px;
+/* ===== OUTPUT BOX ===== */
+#outputBox {
+  margin-top: 15px;
+  background: #f9f9ff;
 }
 
-.final-line {
-  margin-top: 30px;
-  font-weight: bold;
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 160px;
   }
+
+  .container {
+    margin-left: 170px;
+    padding: 20px 15px;
+  }
+
+  .profile-box {
+    font-size: 12px;
+  }
+}
