@@ -3,106 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ImageToolify – Free Image Tools</title>
+  <title>PromptMint</title>
   <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/app.js"></script>
 </head>
 <body>
-
-<header class="topbar">
-  <h1 class="logo">ImageToolify</h1>
-
-  <!-- Hamburger Button -->
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
+  <!-- Sidebar / Hamburger Menu -->
+  <div id="sidebar" class="sidebar">
+    <div class="logo">PromptMint</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="generate.html">Generate Prompt</a></li>
+      <li><a href="fix.html">Fix Prompt</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+    </ul>
   </div>
-</header>
 
-<!-- Sidebar Menu -->
-<div class="sidebar" id="sidebar">
-  <button class="close-btn" id="closeSidebar">&times;</button>
-  <ul>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="privacy.html">Privacy Policy</a></li>
-    <li><a href="terms.html">Terms & Conditions</a></li>
-  </ul>
-</div>
+  <!-- Page content -->
+  <div class="main-content">
+    <!-- Header with profile -->
+    <header>
+      <button id="menu-toggle">&#9776;</button>
+      <div id="profile" class="profile">
+        <img src="https://img.icons8.com/ios-filled/50/000000/user.png" alt="Profile Icon">
+        <div id="profile-popup" class="profile-popup">
+          <p><strong>Name:</strong> Guest User</p>
+          <p><strong>Plan:</strong> Free</p>
+          <p><strong>Credits:</strong> <span id="credits">25</span></p>
+          <button id="logout-btn">Logout</button>
+        </div>
+      </div>
+    </header>
 
-<main>
-  <section class="hero">
-    <h2>Fast & Free Image Tools</h2>
-    <p>Convert images to PDF or compress images instantly — no upload, no tracking.</p>
-    <div class="buttons">
-      <a href="image-to-pdf.html" class="tool-btn">Image to PDF</a>
-      <a href="image-compressor.html" class="tool-btn">Image Compressor</a>
-    </div>
-  </section>
-  <section class="seo-content">
+    <!-- Main section -->
+    <section class="hero">
+      <h1>Welcome to PromptMint</h1>
+      <p>Generate high-quality AI image prompts and fix bad prompts easily. No login required.</p>
 
-  <h2>Free Online Image Tools – Fast, Secure & Easy</h2>
-  <p>
-    ImageToolify offers powerful and free online image tools designed to help you
-    convert images to PDF and compress images online without losing quality.
-    Our tools work directly in your browser, meaning no uploads, no tracking,
-    and complete privacy.
-  </p>
+      <div class="button-group">
+        <a href="generate.html" class="btn">Generate Prompt</a>
+        <a href="fix.html" class="btn">Fix Prompt</a>
+      </div>
 
-  <h3>Why Use ImageToolify?</h3>
-  <p>
-    If you are looking for a fast image to PDF converter or an online image compressor,
-    ImageToolify is the perfect solution. Whether you are a student, professional,
-    content creator, or developer, our tools help you save time and storage instantly.
-  </p>
-
-  <ul>
-    <li>✔ Free image to PDF converter online</li>
-    <li>✔ Compress image size without quality loss</li>
-    <li>✔ No registration or sign-up required</li>
-    <li>✔ Works on mobile, tablet, and desktop</li>
-    <li>✔ 100% privacy – files never leave your device</li>
-  </ul>
-
-  <h3>Image to PDF Converter</h3>
-  <p>
-    Convert JPG, PNG, and other image formats into a high-quality PDF file.
-    Our image to PDF tool is ideal for assignments, documents, and professional sharing.
-    It is completely free and works instantly in your browser.
-  </p>
-
-  <h3>Image Compressor Online</h3>
-  <p>
-    Reduce image file size online for websites, social media, and faster loading.
-    ImageToolify’s image compressor intelligently compresses images while maintaining
-    excellent visual quality.
-  </p>
-
-  <h3>How It Works</h3>
-  <ol>
-    <li>Select the tool you need</li>
-    <li>Choose your image file</li>
-    <li>Convert or compress instantly</li>
-    <li>Download your result</li>
-  </ol>
-
-  <h3>Privacy-First Image Tools</h3>
-  <p>
-    Unlike many online image tools, ImageToolify does not upload your files to any server.
-    All processing happens locally in your browser, ensuring maximum security and privacy.
-  </p>
-
-  <p class="final-line">
-    ImageToolify – simple, fast, and free image tools for everyone.
-  </p>
-
-  </section>
-</main>
-
-<footer>
-  <p>© 2025 ImageToolify. All rights reserved.</p>
-</footer>
-
-<script src="js/script.js"></script>
+      <div class="credits-section">
+        <p>No credits? Watch an ad to earn 3 credits.</p>
+        <button id="watch-ad-btn" class="btn">Watch Ad → Earn Credits</button>
+      </div>
+    </section>
+  </div>
 </body>
-    </html>
+</html>￼Enter
