@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-adsense-account" content="ca-pub-5158226041669286">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Metadata & EXIF Viewer – Free, Private | ImageToolify</title>
+<meta name="description" content="See the camera model, date taken, and shooting settings hidden in a photo's EXIF data. Runs locally in your browser — no uploads, no tracking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14161C; --paper:#F3F4EF; --surface:#FFFFFF;
+  --blue:#3654FF; --blue-deep:#1E33C4; --lime:#C9FF3D;
+  --slate:#6B7079; --slate-200:#E4E4DE; --slate-100:#EBEBE5;
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','SFMono-Regular',monospace;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:28px; --max-w:1120px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.section-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 12px;letter-spacing:-0.01em}
+h1{font-size:clamp(2rem,4.4vw,2.9rem);font-weight:700}
+p{margin:0 0 14px;color:#33363E}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+.topbar{position:sticky;top:0;z-index:40;background:rgba(243,244,239,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--slate-200)}
+.topbar-inner{max-width:var(--max-w);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{font-family:var(--font-mono);font-weight:600;font-size:13px;background:var(--ink);color:var(--paper);padding:6px 8px;border-radius:6px}
+.logo-word{font-family:var(--font-display);font-weight:700;font-size:19px}
+.nav-desktop{display:none;gap:24px}
+.nav-desktop a{font-size:14px;font-weight:500;color:#4A4D55;white-space:nowrap}
+.nav-desktop a:hover{color:var(--blue)}
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;cursor:pointer}
+.hamburger span{display:block;height:2px;width:22px;background:var(--ink);border-radius:2px;transition:transform .25s ease,opacity .25s ease}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media (min-width:980px){.nav-desktop{display:flex}}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(20,22,28,.4);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:45}
+.sidebar-overlay.active{opacity:1;pointer-events:auto}
+.sidebar{position:fixed;top:0;right:0;height:100%;width:min(320px,84vw);background:var(--surface);box-shadow:-12px 0 40px rgba(20,22,28,.14);transform:translateX(100%);transition:transform .3s ease;z-index:50;padding:28px;overflow-y:auto}
+.sidebar.active{transform:translateX(0)}
+.close-btn{background:none;border:none;font-size:28px;line-height:1;color:var(--ink);cursor:pointer;margin-bottom:20px;padding:4px}
+.sidebar-group-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin:18px 0 6px}
+.sidebar-group-label:first-of-type{margin-top:0}
+.sidebar ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+.sidebar li a{display:block;padding:10px 4px;font-family:var(--font-display);font-size:15.5px;font-weight:600;border-bottom:1px solid var(--slate-100)}
+.sidebar li a:hover{color:var(--blue)}
+
+.page-head{padding:56px 0 8px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);margin:0 0 12px}
+.page-sub{max-width:56ch;font-size:1.05rem;color:#45484F}
+
+.tool-wrap{padding:32px 0 90px}
+.tool-card{background:var(--surface);border:1px solid var(--slate-200);border-radius:var(--radius-lg);padding:28px;box-shadow:0 30px 60px -30px rgba(20,22,28,.14)}
+
+.dropzone{border:2px dashed var(--slate-200);border-radius:var(--radius-md);padding:44px 20px;text-align:center;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.dropzone.drag{border-color:var(--blue);background:rgba(54,84,255,.05)}
+.dropzone-icon{width:44px;height:44px;margin:0 auto 14px;color:var(--blue-deep)}
+.dropzone h3{font-size:1.05rem;margin-bottom:6px}
+.dropzone p{font-size:13.5px;color:var(--slate);margin-bottom:0}
+.dropzone input{display:none}
+
+.controls{display:none;margin-top:8px}
+.controls.active{display:block}
+
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.preset-pill{padding:9px 14px;border:1.5px solid var(--slate-200);border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);transition:border-color .15s ease,background .15s ease,color .15s ease}
+.preset-pill:hover{border-color:var(--blue)}
+.preset-pill.active{border-color:var(--blue);background:rgba(54,84,255,.08);color:var(--blue-deep)}
+
+.field-row{margin-bottom:20px}
+.field-label{display:block;font-weight:600;font-size:14px;margin-bottom:8px}
+select.select-input{width:100%;max-width:360px;padding:12px 14px;border:1.5px solid var(--slate-200);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:14.5px;background:var(--surface);color:var(--ink)}
+
+.crop-stage{position:relative;width:100%;max-height:520px;overflow:hidden;background:var(--slate-100);border-radius:var(--radius-md);margin-bottom:20px;touch-action:none;user-select:none;display:flex;align-items:center;justify-content:center}
+.crop-stage img{max-width:100%;max-height:520px;display:block;pointer-events:none}
+.crop-box{position:absolute;border:2px solid var(--lime);box-shadow:0 0 0 2000px rgba(20,22,28,0.55);cursor:move}
+.crop-box.circle-preview{border-radius:50%}
+.crop-box::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:calc(100%/3) 100%,100% calc(100%/3);pointer-events:none;opacity:.7}
+.crop-box.circle-preview::before{display:none}
+.crop-handle{position:absolute;width:16px;height:16px;background:var(--surface);border:2px solid var(--blue);border-radius:50%;transform:translate(-50%,-50%);z-index:2}
+.crop-handle.nw{top:0;left:0;cursor:nwse-resize}
+.crop-handle.ne{top:0;left:100%;cursor:nesw-resize}
+.crop-handle.sw{top:100%;left:0;cursor:nesw-resize}
+.crop-handle.se{top:100%;left:100%;cursor:nwse-resize}
+
+.dims-row{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--slate);margin-bottom:20px;flex-wrap:wrap}
+.dims-row b{color:var(--ink)}
+
+.checkbox-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;font-size:14px;font-weight:600}
+.checkbox-row input{width:18px;height:18px;accent-color:var(--blue)}
+
+.action-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:var(--radius-sm);font-weight:600;font-size:14.5px;border:none;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 24px -8px rgba(54,84,255,.5)}
+.btn-primary:hover{background:var(--blue-deep);transform:translateY(-1px)}
+.btn-primary:disabled{background:var(--slate-200);color:var(--slate);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--slate-200)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:var(--radius-sm);border:1.5px solid var(--slate-200);background:var(--surface);cursor:pointer;font-size:18px;transition:border-color .15s ease,color .15s ease}
+.btn-icon:hover{border-color:var(--blue);color:var(--blue)}
+
+.privacy-note{display:flex;align-items:center;gap:8px;margin-top:24px;font-family:var(--font-mono);font-size:12px;color:var(--slate)}
+.privacy-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);flex-shrink:0}
+
+.how{padding:0 0 90px}
+.how h2{font-size:1.4rem}
+.how-steps{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:700px){.how-steps{grid-template-columns:repeat(3,1fr)}}
+.how-steps li{display:flex;gap:12px}
+.how-index{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--blue);flex-shrink:0}
+.how-steps h4{margin-bottom:4px;font-size:15px}
+.how-steps p{font-size:13.5px;margin-bottom:0;color:var(--slate)}
+
+footer{background:var(--ink);color:var(--slate-200);padding:44px 0 32px}
+.footer-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:20px}
+@media (min-width:700px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-brand .logo-mark{background:var(--paper);color:var(--ink)}
+.footer-brand .logo-word{color:#fff;font-size:16px}
+.footer-links{display:flex;flex-wrap:wrap;gap:18px}
+.footer-links a{font-size:13.5px;color:#B7BAC2}
+.footer-links a:hover{color:var(--lime)}
+.footer-copy{font-family:var(--font-mono);font-size:12px;color:#7A7E88;margin:0}
+
+.meta-table{width:100%;border-collapse:collapse;margin-bottom:8px}
+.meta-table tr{border-bottom:1px solid var(--slate-100)}
+.meta-table tr:last-child{border-bottom:none}
+.meta-table td{padding:11px 4px;font-size:14px}
+.meta-table td:first-child{color:var(--slate);font-weight:600;width:44%}
+.meta-table td:last-child{font-family:var(--font-mono);font-size:13px;color:var(--ink)}
+.meta-section-title{font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--blue-deep);margin:24px 0 8px}
+.meta-section-title:first-child{margin-top:0}
+.empty-note{background:var(--slate-100);border-radius:var(--radius-sm);padding:14px 16px;font-size:13.5px;color:var(--slate);margin-top:8px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="logo"><span class="logo-mark">IT</span><span class="logo-word">ImageToolify</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="image-compressor.html">Compressor</a>
+      <a href="format-converter.html">Format Converter</a>
+      <a href="index.html#tools">All Tools</a>
+    </nav>
+    <div class="hamburger" id="hamburger" aria-label="Open menu" role="button" tabindex="0" aria-expanded="false"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebar" aria-hidden="true">
+  <button class="close-btn" id="closeSidebar" aria-label="Close menu">&times;</button>
+
+  <p class="sidebar-group-label">Convert &amp; Compress</p>
+  <ul>
+    <li><a href="image-to-pdf.html">Image to PDF</a></li>
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+    <li><a href="format-converter.html">Format Converter</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Edit</p>
+  <ul>
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+    <li><a href="image-rotator.html">Rotate &amp; Flip</a></li>
+    <li><a href="collage-maker.html">Collage Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Resize for a Purpose</p>
+  <ul>
+    <li><a href="passport-photo-maker.html">Passport / ID Photo</a></li>
+    <li><a href="social-media-resizer.html">Social Media Resizer</a></li>
+    <li><a href="wallpaper-resizer.html">Wallpaper Resizer</a></li>
+    <li><a href="profile-picture-maker.html">Profile Picture Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Analyze</p>
+  <ul>
+    <li><a href="color-palette-extractor.html">Color Palette Extractor</a></li>
+    <li><a href="exif-viewer.html">Image Metadata / EXIF Viewer</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Site</p>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms &amp; Conditions</a></li>
+  </ul>
+</div>
+<main>
+
+  <section class="page-head">
+    <div class="section-inner">
+      <p class="eyebrow">Image Metadata Viewer</p>
+      <h1>See the metadata hidden inside a photo</h1>
+      <p class="page-sub">Upload a JPEG and see its camera, date, and shooting settings if that data is still attached. Runs locally in your browser — nothing is uploaded.</p>
+    </div>
+  </section>
+
+
+  <section class="tool-wrap">
+    <div class="section-inner">
+      <div class="tool-card">
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose an image to inspect">
+          <svg class="dropzone-icon" viewBox="0 0 48 48" fill="none"><circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="2"/><path d="M30 30L42 42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <h3>Drop an image here, or click to choose one</h3>
+          <p>Works best with JPEGs straight from a camera or phone</p>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+        </div>
+
+        <div class="controls" id="controls">
+          <div class="meta-section-title">File</div>
+          <table class="meta-table" id="fileTable"></table>
+
+          <div id="exifSection" style="display:none">
+            <div class="meta-section-title">Camera &amp; Shot</div>
+            <table class="meta-table" id="exifTable"></table>
+          </div>
+
+          <div id="emptyNotice" class="empty-note" style="display:none">
+            No EXIF metadata was found in this file. Many PNGs, WebPs, and images shared through messaging apps or social media have this data stripped out before you ever see them.
+          </div>
+
+          <div class="action-row" style="margin-top:20px;">
+            <button class="btn btn-secondary" id="chooseAnotherBtn">Choose another image</button>
+          </div>
+        </div>
+
+        <div class="privacy-note"><span class="privacy-dot"></span> Processed locally in your browser · no upload, no server, no tracking</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="section-inner">
+      <h2>How it works</h2>
+      <ol class="how-steps">
+        <li><span class="how-index">01</span><div><h4>Upload an image</h4><p>JPEGs carry the most metadata, especially straight off a camera or phone.</p></div></li>
+        <li><span class="how-index">02</span><div><h4>Read the file locally</h4><p>The file is parsed byte-by-byte in your browser to find its EXIF block.</p></div></li>
+        <li><span class="how-index">03</span><div><h4>See what's there</h4><p>Camera model, date taken, and shooting settings appear if present.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-mark">IT</span><span class="logo-word">ImageToolify</span></div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </nav>
+    <p class="footer-copy">© 2025 ImageToolify. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hamburger = document.getElementById('hamburger');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var closeBtn = document.getElementById('closeSidebar');
+  function openSidebar(){sidebar.classList.add('active');overlay.classList.add('active');hamburger.classList.add('active');sidebar.setAttribute('aria-hidden','false');hamburger.setAttribute('aria-expanded','true');}
+  function closeSidebar(){sidebar.classList.remove('active');overlay.classList.remove('active');hamburger.classList.remove('active');sidebar.setAttribute('aria-hidden','true');hamburger.setAttribute('aria-expanded','false');}
+  hamburger.addEventListener('click', function(){ sidebar.classList.contains('active') ? closeSidebar() : openSidebar(); });
+  hamburger.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();hamburger.click();} });
+  closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSidebar(); });
+})();
+
+(function(){
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var controls = document.getElementById('controls');
+  var fileTable = document.getElementById('fileTable');
+  var exifSection = document.getElementById('exifSection');
+  var exifTable = document.getElementById('exifTable');
+  var emptyNotice = document.getElementById('emptyNotice');
+  var chooseAnotherBtn = document.getElementById('chooseAnotherBtn');
+
+  function formatBytes(bytes){
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(2) + ' MB';
+  }
+
+  function addRow(table, label, value){
+    var tr = document.createElement('tr');
+    var td1 = document.createElement('td'); td1.textContent = label;
+    var td2 = document.createElement('td'); td2.textContent = value;
+    tr.appendChild(td1); tr.appendChild(td2);
+    table.appendChild(tr);
+  }
+
+  var TAG_NAMES = {
+    0x010F: 'Make', 0x0110: 'Model', 0x0112: 'Orientation',
+    0x0132: 'DateTime', 0x9003: 'DateTimeOriginal',
+    0x829A: 'ExposureTime', 0x829D: 'FNumber', 0x8827: 'ISO',
+    0x920A: 'FocalLength', 0x0131: 'Software',
+    0xA002: 'PixelXDimension', 0xA003: 'PixelYDimension',
+    0x8825: 'GPSInfo', 0x8769: 'ExifSubIFD'
+  };
+
+  function readEXIF(buffer){
+    var view = new DataView(buffer);
+    if(view.byteLength < 4 || view.getUint16(0) !== 0xFFD8) return null;
+    var offset = 2;
+    while(offset < view.byteLength - 1){
+      if(view.getUint8(offset) !== 0xFF) break;
+      var marker = view.getUint8(offset + 1);
+      if(marker === 0xE1){
+        var segLen = view.getUint16(offset + 2);
+        var start = offset + 4;
+        if(view.getUint32(start) === 0x45786966 && view.getUint16(start + 4) === 0x0000){
+          return parseTIFF(view, start + 6);
+        }
+        offset += 2 + segLen;
+      } else if(marker === 0xD8 || marker === 0xD9 || (marker >= 0xD0 && marker <= 0xD7)){
+        offset += 2;
+      } else if(marker === 0xDA){
+        break;
+      } else {
+        var len = view.getUint16(offset + 2);
+        offset += 2 + len;
+      }
+    }
+    return null;
+  }
+
+  function parseTIFF(view, tiffStart){
+    var little = view.getUint16(tiffStart) === 0x4949;
+    var firstIFDOffset = view.getUint32(tiffStart + 4, little);
+    return readIFD(view, tiffStart, tiffStart + firstIFDOffset, little);
+  }
+
+  function typeSize(type){ return ({1:1,2:1,3:2,4:4,5:8,9:4,10:8})[type] || 1; }
+
+  function readValue(view, tiffStart, type, count, valueOffset, little){
+    var size = typeSize(type) * count;
+    var dataOffset = size > 4 ? tiffStart + view.getUint32(valueOffset, little) : valueOffset;
+    if(type === 2){
+      var str = '';
+      for(var i = 0; i < count - 1; i++){
+        var code = view.getUint8(dataOffset + i);
+        if(code === 0) break;
+        str += String.fromCharCode(code);
+      }
+      return str.trim();
+    }
+    if(type === 3) return view.getUint16(dataOffset, little);
+    if(type === 4) return view.getUint32(dataOffset, little);
+    if(type === 5){
+      var num = view.getUint32(dataOffset, little);
+      var den = view.getUint32(dataOffset + 4, little);
+      return den ? num / den : 0;
+    }
+    return null;
+  }
+
+  function readIFD(view, tiffStart, ifdOffset, little){
+    var result = {};
+    if(ifdOffset + 2 > view.byteLength) return result;
+    var numEntries = view.getUint16(ifdOffset, little);
+    for(var i = 0; i < numEntries; i++){
+      var entryOffset = ifdOffset + 2 + i * 12;
+      if(entryOffset + 12 > view.byteLength) break;
+      var tag = view.getUint16(entryOffset, little);
+      var type = view.getUint16(entryOffset + 2, little);
+      var count = view.getUint32(entryOffset + 4, little);
+      var valueOffset = entryOffset + 8;
+      if(tag === 0x8769){
+        var subOffset = view.getUint32(valueOffset, little);
+        try{
+          var sub = readIFD(view, tiffStart, tiffStart + subOffset, little);
+          Object.assign(result, sub);
+        }catch(e){}
+        continue;
+      }
+      var name = TAG_NAMES[tag];
+      if(!name) continue;
+      try{
+        result[name] = readValue(view, tiffStart, type, count, valueOffset, little);
+      }catch(e){}
+    }
+    return result;
+  }
+
+  function formatExposure(v){
+    if(!v) return null;
+    if(v >= 1) return v.toFixed(1) + ' s';
+    return '1/' + Math.round(1/v) + ' s';
+  }
+
+  function formatDate(v){
+    if(!v) return null;
+    var parts = v.split(' ');
+    if(parts.length !== 2) return v;
+    return parts[0].replace(/:/g, '-') + ' ' + parts[1];
+  }
+
+  function openFile(file){
+    var img = new Image();
+    var urlReader = new FileReader();
+    urlReader.onload = function(e){
+      img.onload = function(){
+        fileTable.innerHTML = '';
+        addRow(fileTable, 'File name', file.name);
+        addRow(fileTable, 'File type', file.type || 'unknown');
+        addRow(fileTable, 'File size', formatBytes(file.size));
+        addRow(fileTable, 'Dimensions', img.naturalWidth + ' × ' + img.naturalHeight + ' px');
+
+        var arrayReader = new FileReader();
+        arrayReader.onload = function(ev){
+          var exif = null;
+          try{ exif = readEXIF(ev.target.result); }catch(err){ exif = null; }
+
+          exifTable.innerHTML = '';
+          var rows = 0;
+          if(exif){
+            if(exif.Make){ addRow(exifTable, 'Camera make', exif.Make); rows++; }
+            if(exif.Model){ addRow(exifTable, 'Camera model', exif.Model); rows++; }
+            var date = exif.DateTimeOriginal || exif.DateTime;
+            if(date){ addRow(exifTable, 'Date taken', formatDate(date)); rows++; }
+            if(exif.ExposureTime){ var exp = formatExposure(exif.ExposureTime); if(exp){ addRow(exifTable, 'Exposure time', exp); rows++; } }
+            if(exif.FNumber){ addRow(exifTable, 'Aperture', 'f/' + exif.FNumber.toFixed(1)); rows++; }
+            if(exif.ISO){ addRow(exifTable, 'ISO', String(exif.ISO)); rows++; }
+            if(exif.FocalLength){ addRow(exifTable, 'Focal length', Math.round(exif.FocalLength) + ' mm'); rows++; }
+            if(exif.Software){ addRow(exifTable, 'Software', exif.Software); rows++; }
+            if(exif.GPSInfo !== undefined){ addRow(exifTable, 'Location data', 'Present in this file'); rows++; }
+          }
+
+          if(rows > 0){
+            exifSection.style.display = 'block';
+            emptyNotice.style.display = 'none';
+          } else {
+            exifSection.style.display = 'none';
+            emptyNotice.style.display = 'block';
+          }
+
+          controls.classList.add('active');
+          dropzone.style.display = 'none';
+        };
+        arrayReader.readAsArrayBuffer(file);
+      };
+      img.src = e.target.result;
+    };
+    urlReader.readAsDataURL(file);
+  }
+
+  dropzone.addEventListener('click', function(){ fileInput.click(); });
+  dropzone.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click();} });
+  fileInput.addEventListener('change', function(e){ if(e.target.files[0]) openFile(e.target.files[0]); });
+  ['dragenter','dragover'].forEach(function(evt){ dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.add('drag'); }); });
+  ['dragleave','drop'].forEach(function(evt){ dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.remove('drag'); }); });
+  dropzone.addEventListener('drop', function(e){ var file = e.dataTransfer.files[0]; if(file) openFile(file); });
+
+  chooseAnotherBtn.addEventListener('click', function(){
+    fileInput.value = '';
+    controls.classList.remove('active');
+    dropzone.style.display = '';
+    fileInput.click();
+  });
+})();
+</script>
+</body></html>
