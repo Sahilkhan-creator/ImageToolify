@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-adsense-account" content="ca-pub-5158226041669286">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImageToolify – Free Image to PDF & Image Compressor, No Uploads</title>
+<meta name="description" content="Convert images to PDF and compress images instantly in your browser. No uploads, no tracking, no sign-up — everything processes on your own device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14161C; --paper:#F3F4EF; --surface:#FFFFFF;
+  --blue:#3654FF; --blue-deep:#1E33C4; --lime:#C9FF3D;
+  --slate:#6B7079; --slate-200:#E4E4DE; --slate-100:#EBEBE5;
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','SFMono-Regular',monospace;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:28px; --max-w:1120px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.section-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);margin:0 0 12px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.12;margin:0 0 16px;letter-spacing:-0.01em}
+h1{font-size:clamp(2.3rem,5vw,3.6rem);font-weight:700}
+h2{font-size:clamp(1.7rem,3.2vw,2.4rem)}
+h3{font-size:1.3rem}
+h4{font-size:1.05rem;margin-bottom:6px}
+p{margin:0 0 14px;color:#33363E}
+a:focus-visible,button:focus-visible,.hamburger:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}
+
+.topbar{position:sticky;top:0;z-index:40;background:rgba(243,244,239,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--slate-200)}
+.topbar-inner{max-width:var(--max-w);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{font-family:var(--font-mono);font-weight:600;font-size:13px;background:var(--ink);color:var(--paper);padding:6px 8px;border-radius:6px}
+.logo-word{font-family:var(--font-display);font-weight:700;font-size:19px}
+.nav-desktop{display:none;gap:32px}
+.nav-desktop a{font-size:14.5px;font-weight:500;color:#4A4D55;transition:color .15s ease}
+.nav-desktop a:hover{color:var(--blue)}
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;cursor:pointer}
+.hamburger span{display:block;height:2px;width:22px;background:var(--ink);border-radius:2px;transition:transform .25s ease,opacity .25s ease}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media (min-width:860px){.nav-desktop{display:flex}}
+
+.sidebar-overlay{position:fixed;inset:0;background:rgba(20,22,28,.4);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:45}
+.sidebar-overlay.active{opacity:1;pointer-events:auto}
+.sidebar{position:fixed;top:0;right:0;height:100%;width:min(320px,84vw);background:var(--surface);box-shadow:-12px 0 40px rgba(20,22,28,.14);transform:translateX(100%);transition:transform .3s ease;z-index:50;padding:28px;overflow-y:auto}
+.sidebar.active{transform:translateX(0)}
+.close-btn{background:none;border:none;font-size:28px;line-height:1;color:var(--ink);cursor:pointer;margin-bottom:20px;padding:4px}
+.sidebar-group-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin:18px 0 6px}
+.sidebar-group-label:first-of-type{margin-top:0}
+.sidebar ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+.sidebar li a{display:block;padding:10px 4px;font-family:var(--font-display);font-size:15.5px;font-weight:600;border-bottom:1px solid var(--slate-100)}
+.sidebar li a:hover{color:var(--blue)}
+
+.hero{padding:72px 0 96px;overflow:hidden}
+.hero-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr;gap:56px;align-items:center}
+@media (min-width:940px){.hero-inner{grid-template-columns:1.05fr .95fr;gap:40px}}
+.hero-copy h1{max-width:13ch}
+.hl{color:var(--blue)}
+.hero-sub{font-size:1.08rem;max-width:46ch;color:#45484F}
+.buttons{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0 18px}
+.tool-btn{display:inline-flex;align-items:center;gap:10px;padding:15px 22px;border-radius:var(--radius-sm);font-weight:600;font-size:15px;transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease}
+.tool-btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 24px -8px rgba(54,84,255,.55)}
+.tool-btn-primary:hover{background:var(--blue-deep);transform:translateY(-1px)}
+.tool-btn-secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--slate-200)}
+.tool-btn-secondary:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px)}
+.btn-arrow{transition:transform .15s ease;display:inline-block}
+.tool-btn:hover .btn-arrow{transform:translateX(3px)}
+.hero-trust{font-family:var(--font-mono);font-size:12.5px;color:var(--slate);margin:0}
+
+.hero-visual{display:flex;justify-content:center}
+.demo-card{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--slate-200);border-radius:var(--radius-lg);padding:22px;box-shadow:0 30px 60px -24px rgba(20,22,28,.18)}
+.demo-card-head{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.demo-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 3px rgba(201,255,61,.25)}
+.demo-card-label{font-family:var(--font-mono);font-size:12.5px;color:var(--slate)}
+.demo-file{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--slate-100);border-radius:var(--radius-md)}
+.demo-icon{width:40px;height:40px;color:var(--blue-deep);flex-shrink:0}
+.demo-meta{flex:1;min-width:0}
+.demo-name{display:block;font-family:var(--font-mono);font-size:12.5px;color:#45484F;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demo-bar{height:6px;border-radius:4px;background:var(--slate-200);overflow:hidden;margin-bottom:10px}
+.demo-bar-fill{height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--lime));animation:compress-fill 3.6s ease-in-out infinite}
+@keyframes compress-fill{0%{width:0%}55%{width:100%}100%{width:100%}}
+.demo-size-row{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px}
+.demo-size-before{color:var(--slate)}
+.demo-size-arrow{color:var(--slate)}
+.demo-size-after{color:var(--ink);font-weight:600;opacity:0;animation:reveal-size 3.6s ease-in-out infinite}
+@keyframes reveal-size{0%,50%{opacity:0}60%,100%{opacity:1}}
+.demo-status{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--slate-100)}
+.demo-status-dot{width:7px;height:7px;border-radius:50%;background:var(--slate-200);animation:status-pulse 3.6s ease-in-out infinite}
+@keyframes status-pulse{0%,55%{background:var(--slate-200)}65%,100%{background:var(--lime)}}
+.demo-status-text{font-family:var(--font-mono);font-size:12px;color:var(--slate)}
+
+.tools{padding:20px 0 84px}
+.tool-grid{display:grid;grid-template-columns:1fr;gap:20px;margin-top:32px}
+@media (min-width:700px){.tool-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){.tool-grid{grid-template-columns:repeat(3,1fr)}}
+.tool-card{display:block;background:var(--surface);border:1px solid var(--slate-200);border-radius:var(--radius-lg);padding:32px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.tool-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -20px rgba(20,22,28,.18);border-color:var(--blue)}
+.tool-card-icon{width:46px;height:46px;color:var(--blue-deep);margin-bottom:18px}
+.tool-card-icon-fill{color:var(--blue)}
+.tool-card p{font-size:14.5px}
+.tool-card-cta{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;color:var(--blue-deep);margin-top:6px}
+.tool-card:hover .btn-arrow{transform:translateX(3px)}
+
+.tool-grid-mini{display:grid;grid-template-columns:1fr;gap:14px;margin-top:32px}
+@media (min-width:640px){.tool-grid-mini{grid-template-columns:1fr 1fr}}
+@media (min-width:980px){.tool-grid-mini{grid-template-columns:repeat(3,1fr)}}
+.tool-card-mini{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--slate-200);border-radius:var(--radius-md);padding:20px;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease}
+.tool-card-mini:hover{transform:translateY(-2px);box-shadow:0 18px 36px -18px rgba(20,22,28,.16);border-color:var(--blue)}
+.tool-icon-badge{width:38px;height:38px;border-radius:10px;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:2px}
+.tool-card-mini h4{font-size:15.5px;margin-bottom:2px}
+.tool-card-mini p{font-size:13px;color:var(--slate);margin-bottom:2px}
+.tool-card-mini-cta{font-size:13px;font-weight:600;color:var(--blue-deep);display:inline-flex;align-items:center;gap:6px}
+.tool-card-mini:hover .btn-arrow{transform:translateX(3px)}
+
+.tool-group-label{font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);margin:36px 0 0}
+.tool-group-label:first-of-type{margin-top:32px}
+
+.how{padding:84px 0;background:var(--surface);border-top:1px solid var(--slate-200);border-bottom:1px solid var(--slate-200)}
+.how-steps{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:0}
+@media (min-width:760px){.how-steps{grid-template-columns:repeat(4,1fr);gap:24px}}
+.how-steps li{display:flex;gap:14px;padding:20px 0;border-top:1px solid var(--slate-100)}
+@media (min-width:760px){.how-steps li{flex-direction:column;gap:10px;padding:0;border-top:none}}
+.how-index{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--blue);flex-shrink:0}
+.how-steps h4{margin-bottom:4px}
+.how-steps p{font-size:14px;margin-bottom:0;color:var(--slate)}
+
+.why{padding:84px 0}
+.why-grid{display:grid;grid-template-columns:1fr;gap:28px;margin-top:32px}
+@media (min-width:700px){.why-grid{grid-template-columns:1fr 1fr}}
+.why-item{display:flex;gap:14px;align-items:flex-start}
+.why-check{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--lime);color:var(--ink);font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.why-item p{font-size:14.5px;margin-bottom:0;color:var(--slate)}
+
+.seo-content{padding:84px 0 96px;background:var(--surface);border-top:1px solid var(--slate-200)}
+.seo-content .section-inner{max-width:760px}
+.seo-content h2{margin-bottom:20px}
+.seo-content p{font-size:15.5px;color:#45484F}
+.final-line{font-family:var(--font-display);font-weight:600;color:var(--ink);font-size:1.05rem;margin-top:24px}
+
+footer{background:var(--ink);color:var(--slate-200);padding:44px 0 32px}
+.footer-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:20px}
+@media (min-width:700px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-brand .logo-mark{background:var(--paper);color:var(--ink)}
+.footer-brand .logo-word{color:#fff;font-size:16px}
+.footer-links{display:flex;flex-wrap:wrap;gap:18px}
+.footer-links a{font-size:13.5px;color:#B7BAC2;transition:color .15s ease}
+.footer-links a:hover{color:var(--lime)}
+.footer-copy{font-family:var(--font-mono);font-size:12px;color:#7A7E88;margin:0}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">IT</span>
+      <span class="logo-word">ImageToolify</span>
+    </a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="image-compressor.html">Compressor</a>
+      <a href="format-converter.html">Format Converter</a>
+      <a href="#tools">All Tools</a>
+    </nav>
+    <div class="hamburger" id="hamburger" aria-label="Open menu" role="button" tabindex="0" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebar" aria-hidden="true">
+  <button class="close-btn" id="closeSidebar" aria-label="Close menu">&times;</button>
+
+  <p class="sidebar-group-label">Convert &amp; Compress</p>
+  <ul>
+    <li><a href="image-to-pdf.html">Image to PDF</a></li>
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+    <li><a href="format-converter.html">Format Converter</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Edit</p>
+  <ul>
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+    <li><a href="image-rotator.html">Rotate &amp; Flip</a></li>
+    <li><a href="collage-maker.html">Collage Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Resize for a Purpose</p>
+  <ul>
+    <li><a href="passport-photo-maker.html">Passport / ID Photo</a></li>
+    <li><a href="social-media-resizer.html">Social Media Resizer</a></li>
+    <li><a href="wallpaper-resizer.html">Wallpaper Resizer</a></li>
+    <li><a href="profile-picture-maker.html">Profile Picture Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Analyze</p>
+  <ul>
+    <li><a href="color-palette-extractor.html">Color Palette Extractor</a></li>
+    <li><a href="exif-viewer.html">Image Metadata / EXIF Viewer</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Site</p>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms &amp; Conditions</a></li>
+  </ul>
+</div>
+
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Runs entirely on your device</p>
+        <h1>Image tools that don't <span class="hl">phone home.</span></h1>
+        <p class="hero-sub">Convert images to PDF or shrink their file size in seconds. Nothing is uploaded to a server — the processing happens right here, in this tab.</p>
+        <div class="buttons">
+          <a href="image-to-pdf.html" class="tool-btn tool-btn-primary">Image to PDF <span class="btn-arrow">→</span></a>
+          <a href="image-compressor.html" class="tool-btn tool-btn-secondary">Compress an Image <span class="btn-arrow">→</span></a>
+        </div>
+        <p class="hero-trust">No sign-up · No watermark · No file limit gimmicks</p>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="demo-card">
+          <div class="demo-card-head">
+            <span class="demo-dot"></span>
+            <span class="demo-card-label">image-compressor</span>
+          </div>
+          <div class="demo-file">
+            <svg class="demo-icon" viewBox="0 0 48 48" fill="none">
+              <rect x="6" y="4" width="36" height="40" rx="3" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17" cy="18" r="4" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 34L18 24L26 32L32 26L40 34" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            <div class="demo-meta">
+              <span class="demo-name">vacation-photo.jpg</span>
+              <div class="demo-bar"><div class="demo-bar-fill"></div></div>
+              <div class="demo-size-row">
+                <span class="demo-size-before">4.2 MB</span>
+                <span class="demo-size-arrow">→</span>
+                <span class="demo-size-after">812 KB</span>
+              </div>
+            </div>
+          </div>
+          <div class="demo-status">
+            <span class="demo-status-dot"></span>
+            <span class="demo-status-text">saved 81% · processed locally</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tools" id="tools">
+    <div class="section-inner">
+      <p class="eyebrow">The tools</p>
+      <h2>Every image tool you need, in one place</h2>
+      <p style="max-width:56ch;color:#45484F;">Twelve free tools, all processed locally in your browser. Nothing you upload here ever leaves your device.</p>
+
+      <p class="tool-group-label">Convert &amp; Compress</p>
+      <div class="tool-grid-mini">
+        <a href="image-to-pdf.html" class="tool-card-mini">
+          <span class="tool-icon-badge">📄</span>
+          <h4>Image to PDF</h4>
+          <p>Turn one or more images into a single PDF file.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="image-compressor.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🗜️</span>
+          <h4>Image Compressor</h4>
+          <p>Shrink file size without visibly losing quality.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="format-converter.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🔁</span>
+          <h4>Format Converter</h4>
+          <p>Convert between JPG, PNG, WebP, GIF, and SVG.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+      </div>
+
+      <p class="tool-group-label">Edit</p>
+      <div class="tool-grid-mini">
+        <a href="image-cropper.html" class="tool-card-mini">
+          <span class="tool-icon-badge">✂️</span>
+          <h4>Image Cropper</h4>
+          <p>Crop with presets like 1:1, 4:5, and 16:9.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="image-rotator.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🔄</span>
+          <h4>Rotate &amp; Flip</h4>
+          <p>Rotate 90° at a time, or mirror horizontally and vertically.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="collage-maker.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🧩</span>
+          <h4>Collage Maker</h4>
+          <p>Combine several photos into one layout.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+      </div>
+
+      <p class="tool-group-label">Resize for a Purpose</p>
+      <div class="tool-grid-mini">
+        <a href="passport-photo-maker.html" class="tool-card-mini">
+          <span class="tool-icon-badge">👤</span>
+          <h4>Passport / ID Photo Maker</h4>
+          <p>Crop to official passport and visa photo sizes.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="social-media-resizer.html" class="tool-card-mini">
+          <span class="tool-icon-badge">📱</span>
+          <h4>Social Media Resizer</h4>
+          <p>Resize to the exact size each platform needs.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="wallpaper-resizer.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🖥️</span>
+          <h4>Wallpaper Resizer</h4>
+          <p>Resize and crop photos to fit any screen.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="profile-picture-maker.html" class="tool-card-mini">
+          <span class="tool-icon-badge">📸</span>
+          <h4>Profile Picture Maker</h4>
+          <p>Crop a clean square or circular profile photo.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+      </div>
+
+      <p class="tool-group-label">Analyze</p>
+      <div class="tool-grid-mini">
+        <a href="color-palette-extractor.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🎨</span>
+          <h4>Color Palette Extractor</h4>
+          <p>Pull the dominant colors out of any image.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+        <a href="exif-viewer.html" class="tool-card-mini">
+          <span class="tool-icon-badge">🔍</span>
+          <h4>Image Metadata / EXIF Viewer</h4>
+          <p>See the camera, date, and settings behind a photo.</p>
+          <span class="tool-card-mini-cta">Open <span class="btn-arrow">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="section-inner">
+      <p class="eyebrow">The process</p>
+      <h2>How it works</h2>
+      <ol class="how-steps">
+        <li><span class="how-index">01</span><div><h4>Pick a tool</h4><p>Image to PDF, or the compressor — whichever job you're here for.</p></div></li>
+        <li><span class="how-index">02</span><div><h4>Choose your file</h4><p>Drop in a JPG, PNG, or other common image format.</p></div></li>
+        <li><span class="how-index">03</span><div><h4>It processes on your device</h4><p>The conversion or compression runs locally — the file never leaves your browser.</p></div></li>
+        <li><span class="how-index">04</span><div><h4>Download the result</h4><p>Save your new PDF or lighter image, immediately.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="section-inner">
+      <p class="eyebrow">Why ImageToolify</p>
+      <h2>Free tools, without the usual catch</h2>
+      <div class="why-grid">
+        <div class="why-item"><span class="why-check">✔</span><div><h4>Nothing is uploaded</h4><p>Every conversion and compression happens locally in your browser tab.</p></div></div>
+        <div class="why-item"><span class="why-check">✔</span><div><h4>No quality loss you'll notice</h4><p>Compression is tuned to shrink files while keeping images sharp.</p></div></div>
+        <div class="why-item"><span class="why-check">✔</span><div><h4>No account required</h4><p>Open the tool, use it, done. No sign-up, no email, no password.</p></div></div>
+        <div class="why-item"><span class="why-check">✔</span><div><h4>Works on any device</h4><p>Phone, tablet, or desktop — the tools adapt to your screen.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seo-content">
+    <div class="section-inner">
+      <h2>Free Online Image Tools — Fast, Secure &amp; Private</h2>
+      <p>ImageToolify offers free online image tools built to convert images to PDF and compress images without losing quality. Every tool runs directly in your browser, so there's no upload step, no tracking, and no file sitting on a server somewhere.</p>
+      <p>Whether you're a student turning in an assignment, a professional prepping files for a client, or a content creator getting an image ready for the web, ImageToolify handles the image to PDF conversion or file size reduction in seconds — for free, with no account needed.</p>
+      <p class="final-line">ImageToolify — simple, fast, and free image tools for everyone.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-mark">IT</span><span class="logo-word">ImageToolify</span></div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </nav>
+    <p class="footer-copy">© 2025 ImageToolify. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hamburger = document.getElementById('hamburger');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var closeBtn = document.getElementById('closeSidebar');
+
+  function openSidebar(){
+    sidebar.classList.add('active');
+    overlay.classList.add('active');
+    hamburger.classList.add('active');
+    sidebar.setAttribute('aria-hidden','false');
+    hamburger.setAttribute('aria-expanded','true');
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    hamburger.classList.remove('active');
+    sidebar.setAttribute('aria-hidden','true');
+    hamburger.setAttribute('aria-expanded','false');
+  }
+  hamburger.addEventListener('click', function(){
+    sidebar.classList.contains('active') ? closeSidebar() : openSidebar();
+  });
+  hamburger.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); hamburger.click(); }
+  });
+  closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeSidebar();
+  });
+})();
+</script>
+</body>
+</html>
