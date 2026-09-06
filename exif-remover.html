@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google-adsense-account" content="ca-pub-5158226041669286">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXIF Remover – Strip Photo Metadata Free | ImageToolify</title>
+<meta name="description" content="Remove all EXIF metadata — camera model, timestamps, GPS location — from a JPEG before sharing it. Runs locally, no uploads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14161C; --paper:#F3F4EF; --surface:#FFFFFF;
+  --blue:#3654FF; --blue-deep:#1E33C4; --lime:#C9FF3D;
+  --slate:#6B7079; --slate-200:#E4E4DE; --slate-100:#EBEBE5;
+  --font-display:'Space Grotesk',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','SFMono-Regular',monospace;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:28px; --max-w:1120px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.section-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;margin:0 0 12px;letter-spacing:-0.01em}
+h1{font-size:clamp(2rem,4.4vw,2.9rem);font-weight:700}
+p{margin:0 0 14px;color:#33363E}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+.topbar{position:sticky;top:0;z-index:40;background:rgba(243,244,239,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--slate-200)}
+.topbar-inner{max-width:var(--max-w);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{font-family:var(--font-mono);font-weight:600;font-size:13px;background:var(--ink);color:var(--paper);padding:6px 8px;border-radius:6px}
+.logo-word{font-family:var(--font-display);font-weight:700;font-size:19px}
+.nav-desktop{display:none;gap:24px}
+.nav-desktop a{font-size:14px;font-weight:500;color:#4A4D55;white-space:nowrap}
+.nav-desktop a:hover{color:var(--blue)}
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;cursor:pointer}
+.hamburger span{display:block;height:2px;width:22px;background:var(--ink);border-radius:2px;transition:transform .25s ease,opacity .25s ease}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media (min-width:980px){.nav-desktop{display:flex}}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(20,22,28,.4);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:45}
+.sidebar-overlay.active{opacity:1;pointer-events:auto}
+.sidebar{position:fixed;top:0;right:0;height:100%;width:min(320px,84vw);background:var(--surface);box-shadow:-12px 0 40px rgba(20,22,28,.14);transform:translateX(100%);transition:transform .3s ease;z-index:50;padding:28px;overflow-y:auto}
+.sidebar.active{transform:translateX(0)}
+.close-btn{background:none;border:none;font-size:28px;line-height:1;color:var(--ink);cursor:pointer;margin-bottom:20px;padding:4px}
+.sidebar-group-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin:18px 0 6px}
+.sidebar-group-label:first-of-type{margin-top:0}
+.sidebar ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px}
+.sidebar li a{display:block;padding:10px 4px;font-family:var(--font-display);font-size:15.5px;font-weight:600;border-bottom:1px solid var(--slate-100)}
+.sidebar li a:hover{color:var(--blue)}
+
+.page-head{padding:56px 0 8px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);margin:0 0 12px}
+.page-sub{max-width:56ch;font-size:1.05rem;color:#45484F}
+
+.tool-wrap{padding:32px 0 90px}
+.tool-card{background:var(--surface);border:1px solid var(--slate-200);border-radius:var(--radius-lg);padding:28px;box-shadow:0 30px 60px -30px rgba(20,22,28,.14)}
+
+.dropzone{border:2px dashed var(--slate-200);border-radius:var(--radius-md);padding:44px 20px;text-align:center;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.dropzone.drag{border-color:var(--blue);background:rgba(54,84,255,.05)}
+.dropzone-icon{width:44px;height:44px;margin:0 auto 14px;color:var(--blue-deep)}
+.dropzone h3{font-size:1.05rem;margin-bottom:6px}
+.dropzone p{font-size:13.5px;color:var(--slate);margin-bottom:0}
+.dropzone input{display:none}
+
+.controls{display:none;margin-top:8px}
+.controls.active{display:block}
+
+.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.preset-pill{padding:9px 14px;border:1.5px solid var(--slate-200);border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);transition:border-color .15s ease,background .15s ease,color .15s ease}
+.preset-pill:hover{border-color:var(--blue)}
+.preset-pill.active{border-color:var(--blue);background:rgba(54,84,255,.08);color:var(--blue-deep)}
+
+.field-row{margin-bottom:20px}
+.field-label{display:block;font-weight:600;font-size:14px;margin-bottom:8px}
+select.select-input{width:100%;max-width:360px;padding:12px 14px;border:1.5px solid var(--slate-200);border-radius:var(--radius-sm);font-family:var(--font-body);font-size:14.5px;background:var(--surface);color:var(--ink)}
+
+.crop-stage{position:relative;width:100%;max-height:520px;overflow:hidden;background:var(--slate-100);border-radius:var(--radius-md);margin-bottom:20px;touch-action:none;user-select:none;display:flex;align-items:center;justify-content:center}
+.crop-stage img{max-width:100%;max-height:520px;display:block;pointer-events:none}
+.crop-box{position:absolute;border:2px solid var(--lime);box-shadow:0 0 0 2000px rgba(20,22,28,0.55);cursor:move}
+.crop-box.circle-preview{border-radius:50%}
+.crop-box::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:calc(100%/3) 100%,100% calc(100%/3);pointer-events:none;opacity:.7}
+.crop-box.circle-preview::before{display:none}
+.crop-handle{position:absolute;width:16px;height:16px;background:var(--surface);border:2px solid var(--blue);border-radius:50%;transform:translate(-50%,-50%);z-index:2}
+.crop-handle.nw{top:0;left:0;cursor:nwse-resize}
+.crop-handle.ne{top:0;left:100%;cursor:nesw-resize}
+.crop-handle.sw{top:100%;left:0;cursor:nesw-resize}
+.crop-handle.se{top:100%;left:100%;cursor:nwse-resize}
+
+.dims-row{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--slate);margin-bottom:20px;flex-wrap:wrap}
+.dims-row b{color:var(--ink)}
+
+.checkbox-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;font-size:14px;font-weight:600}
+.checkbox-row input{width:18px;height:18px;accent-color:var(--blue)}
+
+.action-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:var(--radius-sm);font-weight:600;font-size:14.5px;border:none;cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 10px 24px -8px rgba(54,84,255,.5)}
+.btn-primary:hover{background:var(--blue-deep);transform:translateY(-1px)}
+.btn-primary:disabled{background:var(--slate-200);color:var(--slate);cursor:not-allowed;box-shadow:none;transform:none}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1.5px solid var(--slate-200)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:var(--radius-sm);border:1.5px solid var(--slate-200);background:var(--surface);cursor:pointer;font-size:18px;transition:border-color .15s ease,color .15s ease}
+.btn-icon:hover{border-color:var(--blue);color:var(--blue)}
+
+.privacy-note{display:flex;align-items:center;gap:8px;margin-top:24px;font-family:var(--font-mono);font-size:12px;color:var(--slate)}
+.privacy-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);flex-shrink:0}
+
+.how{padding:0 0 90px}
+.how h2{font-size:1.4rem}
+.how-steps{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:16px}
+@media (min-width:700px){.how-steps{grid-template-columns:repeat(3,1fr)}}
+.how-steps li{display:flex;gap:12px}
+.how-index{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--blue);flex-shrink:0}
+.how-steps h4{margin-bottom:4px;font-size:15px}
+.how-steps p{font-size:13.5px;margin-bottom:0;color:var(--slate)}
+
+footer{background:var(--ink);color:var(--slate-200);padding:44px 0 32px}
+.footer-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:20px}
+@media (min-width:700px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-brand .logo-mark{background:var(--paper);color:var(--ink)}
+.footer-brand .logo-word{color:#fff;font-size:16px}
+.footer-links{display:flex;flex-wrap:wrap;gap:18px}
+.footer-links a{font-size:13.5px;color:#B7BAC2}
+.footer-links a:hover{color:var(--lime)}
+.footer-copy{font-family:var(--font-mono);font-size:12px;color:#7A7E88;margin:0}
+
+.empty-note{background:var(--slate-100);border-radius:var(--radius-sm);padding:14px 16px;font-size:13.5px;color:#33363E;line-height:1.5}
+.file-row{display:flex;align-items:center;gap:14px;padding:14px;background:var(--slate-100);border-radius:var(--radius-md);margin-bottom:20px}
+.file-thumb{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--slate-200)}
+.file-info{flex:1;min-width:0}
+.file-name{font-family:var(--font-mono);font-size:12.5px;color:#33363E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-sizes{font-family:var(--font-mono);font-size:12px;color:var(--slate);margin-top:4px}
+.remove-btn{background:none;border:none;font-size:20px;color:var(--slate);cursor:pointer;padding:4px 8px;flex-shrink:0}
+.remove-btn:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="logo"><span class="logo-mark">IT</span><span class="logo-word">ImageToolify</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <a href="image-to-pdf.html">Image to PDF</a>
+      <a href="image-compressor.html">Compressor</a>
+      <a href="format-converter.html">Format Converter</a>
+      <a href="index.html#tools">All Tools</a>
+    </nav>
+    <div class="hamburger" id="hamburger" aria-label="Open menu" role="button" tabindex="0" aria-expanded="false"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar" id="sidebar" aria-hidden="true">
+  <button class="close-btn" id="closeSidebar" aria-label="Close menu">&times;</button>
+
+  <p class="sidebar-group-label">Convert &amp; Compress</p>
+  <ul>
+    <li><a href="image-to-pdf.html">Image to PDF</a></li>
+    <li><a href="image-compressor.html">Image Compressor</a></li>
+    <li><a href="format-converter.html">Format Converter</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Edit</p>
+  <ul>
+    <li><a href="image-cropper.html">Image Cropper</a></li>
+    <li><a href="image-rotator.html">Rotate &amp; Flip</a></li>
+    <li><a href="collage-maker.html">Collage Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Resize for a Purpose</p>
+  <ul>
+    <li><a href="passport-photo-maker.html">Passport / ID Photo</a></li>
+    <li><a href="social-media-resizer.html">Social Media Resizer</a></li>
+    <li><a href="wallpaper-resizer.html">Wallpaper Resizer</a></li>
+    <li><a href="profile-picture-maker.html">Profile Picture Maker</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Analyze</p>
+  <ul>
+    <li><a href="color-palette-extractor.html">Color Palette Extractor</a></li>
+    <li><a href="exif-viewer.html">Image Metadata / EXIF Viewer</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Privacy &amp; Security</p>
+  <ul>
+    <li><a href="exif-remover.html">EXIF Remover</a></li>
+    <li><a href="gps-remover.html">Image GPS Remover</a></li>
+    <li><a href="pdf-metadata-remover.html">PDF Metadata Remover</a></li>
+    <li><a href="text-encryption.html">Text Encryption / Decryption</a></li>
+    <li><a href="secure-text-pad.html">Temporary Secure Text Pad</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Generators &amp; Utilities</p>
+  <ul>
+    <li><a href="file-hash-calculator.html">File Hash / Checksum Calculator</a></li>
+    <li><a href="password-generator.html">Password Generator</a></li>
+    <li><a href="uuid-generator.html">UUID Generator</a></li>
+    <li><a href="qr-decoder.html">QR Code Decoder</a></li>
+    <li><a href="password-strength-checker.html">Password Strength Checker</a></li>
+    <li><a href="base64-tool.html">Base64 Encode / Decode</a></li>
+  </ul>
+
+  <p class="sidebar-group-label">Site</p>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms &amp; Conditions</a></li>
+  </ul>
+</div>
+<main>
+
+  <section class="page-head">
+    <div class="section-inner">
+      <p class="eyebrow">EXIF Remover</p>
+      <h1>Strip EXIF metadata from a photo</h1>
+      <p class="page-sub">Remove camera model, date taken, GPS location, and every other EXIF tag from a JPEG before you share it. Runs locally in your browser — nothing is uploaded.</p>
+    </div>
+  </section>
+
+
+  <section class="tool-wrap">
+    <div class="section-inner">
+      <div class="tool-card">
+
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose an image">
+          <svg class="dropzone-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/><path d="M24 16v10M24 32h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <h3>Drop an image here, or click to choose one</h3>
+          <p>Works on JPEGs — the format that actually carries EXIF data</p>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+        </div>
+
+        <div class="controls" id="controls">
+          <div class="file-row">
+            <img class="file-thumb" id="thumb" alt="">
+            <div class="file-info">
+              <div class="file-name" id="fileName">—</div>
+              <div class="file-sizes" id="fileSizes">—</div>
+            </div>
+            <button class="remove-btn" id="removeBtn" aria-label="Remove image">&times;</button>
+          </div>
+
+          <div id="statusBox" class="empty-note" style="margin-bottom:20px;">Checking for metadata…</div>
+
+          <div class="action-row">
+            <button class="btn btn-primary" id="downloadBtn">Download cleaned image</button>
+            <button class="btn btn-secondary" id="chooseAnotherBtn">Choose another image</button>
+          </div>
+        </div>
+
+        <div class="privacy-note"><span class="privacy-dot"></span> Processed locally in your browser · no upload, no server, no tracking</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="section-inner">
+      <h2>How it works</h2>
+      <ol class="how-steps">
+        <li><span class="how-index">01</span><div><h4>Upload a photo</h4><p>JPEGs from a camera or phone usually carry the most metadata.</p></div></li>
+        <li><span class="how-index">02</span><div><h4>Metadata is stripped locally</h4><p>The EXIF block is removed directly in your browser.</p></div></li>
+        <li><span class="how-index">03</span><div><h4>Download the clean file</h4><p>Save a copy with no camera info, timestamps, or location data.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-mark">IT</span><span class="logo-word">ImageToolify</span></div>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </nav>
+    <p class="footer-copy">© 2025 ImageToolify. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hamburger = document.getElementById('hamburger');
+  var sidebar = document.getElementById('sidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var closeBtn = document.getElementById('closeSidebar');
+  function openSidebar(){sidebar.classList.add('active');overlay.classList.add('active');hamburger.classList.add('active');sidebar.setAttribute('aria-hidden','false');hamburger.setAttribute('aria-expanded','true');}
+  function closeSidebar(){sidebar.classList.remove('active');overlay.classList.remove('active');hamburger.classList.remove('active');sidebar.setAttribute('aria-hidden','true');hamburger.setAttribute('aria-expanded','false');}
+  hamburger.addEventListener('click', function(){ sidebar.classList.contains('active') ? closeSidebar() : openSidebar(); });
+  hamburger.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();hamburger.click();} });
+  closeBtn.addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSidebar(); });
+})();
+
+(function(){
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var controls = document.getElementById('controls');
+  var thumb = document.getElementById('thumb');
+  var fileNameEl = document.getElementById('fileName');
+  var fileSizesEl = document.getElementById('fileSizes');
+  var statusBox = document.getElementById('statusBox');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var removeBtn = document.getElementById('removeBtn');
+  var chooseAnotherBtn = document.getElementById('chooseAnotherBtn');
+
+  var MODE = 'all'; // 'all' strips entire EXIF/APP1 block, 'gps' strips only GPS IFD tags
+
+  var originalFile = null;
+  var cleanedBlob = null;
+
+  function formatBytes(bytes){
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(2) + ' MB';
+  }
+
+  // Returns { hadExif: bool, hadGps: bool, outBuffer: ArrayBuffer }
+  function processJpeg(buffer){
+    var view = new DataView(buffer);
+    if(view.byteLength < 4 || view.getUint16(0) !== 0xFFD8){
+      return null; // not a JPEG
+    }
+    var hadExif = false;
+    var hadGps = false;
+
+    if(MODE === 'all'){
+      // Rebuild the file skipping any APP1 (0xFFE1) segments entirely.
+      var out = [];
+      var offset = 2;
+      out.push(new Uint8Array(buffer.slice(0,2))); // SOI
+      while(offset < view.byteLength - 1){
+        if(view.getUint8(offset) !== 0xFF) break;
+        var marker = view.getUint8(offset+1);
+        if(marker === 0xDA){
+          out.push(new Uint8Array(buffer.slice(offset)));
+          break;
+        }
+        if(marker === 0xD8 || (marker >= 0xD0 && marker <= 0xD7)){
+          offset += 2;
+          continue;
+        }
+        var segLen = view.getUint16(offset+2);
+        if(marker === 0xE1){
+          hadExif = true;
+          offset += 2 + segLen;
+          continue;
+        }
+        out.push(new Uint8Array(buffer.slice(offset, offset+2+segLen)));
+        offset += 2 + segLen;
+      }
+      var total = out.reduce(function(a,c){return a+c.length;},0);
+      var merged = new Uint8Array(total);
+      var p = 0;
+      out.forEach(function(c){ merged.set(c,p); p += c.length; });
+      return { hadExif: hadExif, hadGps: hadExif, outBuffer: merged.buffer };
+    } else {
+      // GPS-only: find APP1/Exif, zero out the GPS IFD pointer tag (0x8825) in IFD0 so
+      // readers skip the GPS sub-IFD, and blank the GPS IFD bytes themselves.
+      var bytes = new Uint8Array(buffer.slice(0));
+      var offset2 = 2;
+      var app1Start = -1, app1Len = 0;
+      while(offset2 < view.byteLength - 1){
+        if(view.getUint8(offset2) !== 0xFF) break;
+        var marker2 = view.getUint8(offset2+1);
+        if(marker2 === 0xDA) break;
+        if(marker2 === 0xD8 || (marker2 >= 0xD0 && marker2 <= 0xD7)){ offset2 += 2; continue; }
+        var segLen2 = view.getUint16(offset2+2);
+        if(marker2 === 0xE1){
+          var start = offset2 + 4;
+          if(view.getUint32(start) === 0x45786966 && view.getUint16(start+4) === 0x0000){
+            app1Start = offset2; app1Len = segLen2;
+            var tiffStart = start + 6;
+            var little = view.getUint16(tiffStart) === 0x4949;
+            var ifd0Offset = tiffStart + view.getUint32(tiffStart+4, little);
+            var numEntries = view.getUint16(ifd0Offset, little);
+            for(var i=0;i<numEntries;i++){
+              var entryOffset = ifd0Offset + 2 + i*12;
+              var tag = view.getUint16(entryOffset, little);
+              if(tag === 0x8825){
+                hadGps = true;
+                var gpsOffset = view.getUint32(entryOffset+8, little);
+                var gpsAbs = tiffStart + gpsOffset;
+                // Blank the GPS IFD: set its entry count to 0 so parsers see no GPS tags.
+                if(gpsAbs + 2 <= view.byteLength){
+                  view.setUint16(gpsAbs, 0, little);
+                }
+                // Zero the tag itself in IFD0 so it no longer looks like a valid pointer.
+                for(var z=0; z<12; z++){ bytes[entryOffset+z] = 0; }
+              }
+            }
+          }
+          offset2 += 2 + segLen2;
+          break;
+        }
+        offset2 += 2 + segLen2;
+      }
+      if(app1Start === -1){
+        return { hadExif: false, hadGps: false, outBuffer: bytes.buffer };
+      }
+      return { hadExif: true, hadGps: hadGps, outBuffer: bytes.buffer };
+    }
+  }
+
+  function openFile(file){
+    if(!file || !file.type.startsWith('image/')) return;
+    originalFile = file;
+    var urlReader = new FileReader();
+    urlReader.onload = function(e){
+      thumb.src = e.target.result;
+      fileNameEl.textContent = file.name;
+      fileSizesEl.textContent = formatBytes(file.size) + ' original';
+      controls.classList.add('active');
+      dropzone.style.display = 'none';
+
+      if(file.type !== 'image/jpeg'){
+        statusBox.textContent = file.type === 'image/png'
+          ? 'PNG files rarely carry EXIF or GPS data — this file likely has none to remove. You can still download a re-saved copy below.'
+          : 'This file type isn\'t JPEG — metadata stripping works best on JPEGs straight from a camera or phone.';
+        cleanedBlob = file;
+        return;
+      }
+
+      var arrayReader = new FileReader();
+      arrayReader.onload = function(ev){
+        var result = null;
+        try{ result = processJpeg(ev.target.result); }catch(err){ result = null; }
+        if(!result){
+          statusBox.textContent = 'Could not read this file as a JPEG. Try a different image.';
+          cleanedBlob = file;
+          return;
+        }
+        cleanedBlob = new Blob([result.outBuffer], { type: 'image/jpeg' });
+        if(MODE === 'all'){
+          statusBox.textContent = result.hadExif
+            ? 'EXIF metadata found and removed — camera info, timestamps, and location data have all been stripped.'
+            : 'No EXIF metadata was found in this file — it was already clean.';
+        } else {
+          statusBox.textContent = result.hadGps
+            ? 'GPS location data found and removed. Other EXIF fields like camera model and date are left in place.'
+            : 'No GPS location data was found in this file — it was already clean of location info.';
+        }
+      };
+      arrayReader.readAsArrayBuffer(file);
+    };
+    urlReader.readAsDataURL(file);
+  }
+
+  dropzone.addEventListener('click', function(){ fileInput.click(); });
+  dropzone.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click();} });
+  fileInput.addEventListener('change', function(e){ if(e.target.files[0]) openFile(e.target.files[0]); });
+  ['dragenter','dragover'].forEach(function(evt){ dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.add('drag'); }); });
+  ['dragleave','drop'].forEach(function(evt){ dropzone.addEventListener(evt, function(e){ e.preventDefault(); dropzone.classList.remove('drag'); }); });
+  dropzone.addEventListener('drop', function(e){ var file = e.dataTransfer.files[0]; if(file) openFile(file); });
+
+  downloadBtn.addEventListener('click', function(){
+    if(!cleanedBlob) return;
+    var a = document.createElement('a');
+    var baseName = (originalFile.name || 'image').replace(/\.[^.]+$/, '');
+    a.href = URL.createObjectURL(cleanedBlob);
+    a.download = baseName + '-clean.jpg';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  });
+
+  function reset(){
+    originalFile = null; cleanedBlob = null;
+    fileInput.value = '';
+    controls.classList.remove('active');
+    dropzone.style.display = '';
+  }
+  removeBtn.addEventListener('click', reset);
+  chooseAnotherBtn.addEventListener('click', function(){ reset(); fileInput.click(); });
+})();
+</script>
+</body></html>
